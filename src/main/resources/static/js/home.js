@@ -67,11 +67,10 @@ if(password !== repeatPassword){
 }
 else{
   repeatPasswordErrorText.innerText="";
-  const encryptedPassword = encryptMessage(password).toString();
   const data = { "websitename":`${website}`,
                 "userid": `${userName}`,
                 "email":`${email}`,
-                "password": `${encryptedPassword}`,
+                "password": `${password}`,
                 "firstName":`${firstName}`,
                 "lastName":`${lastName}`,
                 "mobileNumber":`${mobileNumber}`,
