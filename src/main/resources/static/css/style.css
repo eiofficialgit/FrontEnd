@@ -1046,13 +1046,10 @@ option {
 } */
 .pagination .page-link{
    color: #020202;
-   font-size: 12px;
+   font-size: 11px;
 }
 .pagination .page-item{
     cursor: pointer;
-}
-.pagination .page-item :hover{
-    background-color: #ffc107;
 }
 .btn, .btn-send, .nova88exch .total_all .search-but, .marquee-pop .pages a, .pages a, .calendarTable_inputBox input, .calendarTable_inputBox textarea, .calendarTable_inputBox .member_select a, .member_select .calendarTable_inputBox a, .total_all .btn_replay, .btn_expand, .add_member {
     background: #eee url(../img/bg-btn.gif) repeat-x;
@@ -1310,7 +1307,7 @@ p {
     margin-top: -6px !important;
 }
 .banking-btn{
-    padding: 6px 11px 6px 11px;
+    padding: 6px 11px 10px 11px;
 }
 .banking-top .search-wrap::before{
     top: 42% !important;
@@ -2223,3 +2220,33 @@ thead {
     color: red;
     font-size: 10px
 }
+.banking-head{
+    display: flex;
+    background: #E0E6E6;
+    margin-bottom: 10px;
+    height: 45px;
+    padding: 0;
+    border-bottom: solid 1px #7e97a7;
+    color: #000;
+}
+.banking-head .text{
+    color: #3b5160;
+    font-size: 13px;
+    padding-top: 12px;
+    padding-right: 9px;
+    padding-left: 9px;
+    border-right: solid 1px #7e97a7;
+}
+.banking-head #balance{
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0;
+}
+.banking-head .baltext {
+    border: none;
+    font-weight: 400;
+    font-size: 12px;
+    padding-top: 12PX;
+    color: #3b5160;
+}
+

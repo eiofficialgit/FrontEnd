@@ -15,12 +15,16 @@ return CryptoJS.AES.decrypt( data, parsedBase64Key, {
   } ).toString( CryptoJS.enc.Utf8 );
 }
 
+var balanceData=0;
 function setData() {
 let data = JSON.parse(sessionStorage?.getItem("data"));
 if(data){
   document.getElementById("ownername").innerText = data.userid;
   let statusofuser=document.getElementById("statusofuser");
   let statusofUSER=document.getElementById("statusofUSER");
+  let balance=document.getElementById("mastersBalance");
+  balanceData=data.myBalance;
+  balance.innerText=balanceData;
   if(data.usertype == 0 && statusofuser){
     statusofuser.innerHTML="Subadmin";
     statusofUSER.innerHTML="Subadmin";
@@ -161,79 +165,113 @@ async function  showAllWebsites() {
 showAllWebsites();
 
 var currentPage = 0;
-var itemsPerPage = 10;
-
+var itemsPerPage = 7;
+var totalPages=0;
+var pageButtons = document.getElementById('page-btn');
+pageButtons.innerHTML=currentPage+1;
 function nextPage() {
-if (currentPage < 2) {
-  currentPage++;
+  if(currentPage < totalPages){
+    currentPage++;
+  }
+  pageButtons.innerHTML=currentPage+1;
   getAllChild(currentPage,itemsPerPage);
-}
 }
 
 function prevPage() {
-if (currentPage > 0) {
-  currentPage--;
+  if(currentPage > 0) {
+    currentPage--;
+  }
+  pageButtons.innerHTML=currentPage+1;
   getAllChild(currentPage,itemsPerPage);
 }
+
+function firstPage() {
+  currentPage=0;
+  pageButtons.innerHTML=currentPage+1;
+  getAllChild(currentPage,itemsPerPage);
+}
+
+function lastPage() {
+  currentPage=totalPages;
+  pageButtons.innerHTML=currentPage;
+  getAllChild(currentPage-1,itemsPerPage);
+}
+
+function pageFind(){
+  var pageSearch=document.getElementById("page-search").value;
+  if(pageSearch === "" || pageSearch < 1){
+    alert("Please Enter a valid page number!");
+    return;
+  }
+  else{
+    if(pageSearch <= totalPages){
+      currentPage=pageSearch-1;
+    } else {
+      alert("Maximum number of pages is : " + totalPages);
+      return;
+    }
+  }
+  pageButtons.innerHTML=currentPage+1;
+  getAllChild(currentPage,itemsPerPage);
 }
 
 window.addEventListener("DOMContentLoaded", (event) => {
 const nextBtn = document.getElementById('next-btn');
 const prevBtn = document.getElementById('prev-btn');
-const pageButtons = document.getElementsByClassName('page-btn');
-if(nextBtn && prevBtn && pageButtons){
+const firstpageBtn = document.getElementById('firstpage-btn');
+const lastpageBtn = document.getElementById('lastpage-btn');
+pageButtons.innerHTML="";
+if(nextBtn && prevBtn && firstpageBtn && lastpageBtn){
   nextBtn.addEventListener('click', nextPage);
   prevBtn.addEventListener('click', prevPage);
-  for (let i = 0; i < pageButtons.length; i++) {
-    pageButtons[i].addEventListener('click', function() {
-        const page = parseInt(this.getAttribute('data-page'));
-        if (page !== currentPage) {
-            currentPage = page;
-            getAllChild(currentPage,itemsPerPage);
-        }
-    });
-  }
+  firstpageBtn.addEventListener('click', firstPage);
+  lastpageBtn.addEventListener('click', lastPage);
+  pageButtons.innerHTML=currentPage+1;
 }
 });
 
 async function getAllChild(currentPage, itemsPerPage) {
-const response = await fetch(`http://3.0.102.63:7074/exuser/allchildwithpagination?page=${currentPage}&size=${itemsPerPage}`);
+const response = await fetch(`http://3.0.102.63:7074/exuser/allchildwithpagination?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
 const childs = await response.json();
-if(childs){
   const encryptedData=childs.data;
   var decryptData=JSON.parse(decryptMessage(encryptedData));
   var stage=JSON.parse(decryptData.payload);
-  var data=JSON.parse(stage.data);
-  showAllChild(data);
-}
-else {
-  console.log("Something went wrong to fetching child !");
-}
+  showAllChild(stage.content);
+  totalPages=stage.totalPages;
 }
 
-async function  showAllChild(data) {
+function  showAllChild(data) {
+let totalExposureField=document.getElementById("totalExposure");
+let totalAvailBal=document.getElementById("totalAvailBal");
+let totalBalance=document.getElementById("totalBalance");
+let availableBalance=document.getElementById("mastersAvailBal");
+var totalExposureData=0;
+var totalAvailableBalanceData=0;
+var availableBalanceData=0;
 let childs = document.getElementById("childs");
 childs.innerHTML="";
 for (let i = 0; i < data.length; i++) {
   let child = data[i];
+  totalExposureData=totalExposureData+child.exposureLimit;
+  totalAvailableBalanceData=totalAvailableBalanceData+child.myBalance;
   childs.innerHTML+=`
       <tr id="sadmin" style="display: table-row;text-align: end;" main_userid="sadmin">
       <td id="accountCol" style="text-align: start;" class="align-L">
       <span class="lv_4" style="background:#568BC8; padding:1px">DIR</span><a id="userDataLink" href="${window.location.pathname}?userid=${child.id}&usertype=${child.usertype+1}">${child.userid}</a>
       </td>
       <td class="credit-amount-member">
-        <a id="creditRefBtn" class="favor-set" href="#">0.00 </a>
+        <a id="creditRefBtn" class="favor-set" href="#">${child.fixLimit}</a>
       </td>
       <td id="balance1">
-        <a href="#" class="link-open">758.86 </a>
+        <a href="#" class="link-open">${child.myBalance+child.exposureLimit}</a>
       </td>
       <td style="color: red">
-        <span style="cursor: pointer;width: 67px;text-align: center; display: inline-block;"class="status-suspend">20.99</span>
+        <span style="cursor: pointer;width: 67px;text-align: center; display: inline-block;"class="status-suspend">${child.exposureLimit}</span>
       </td>
-      <td id="available1">737.87</td>
+      <td id="available1">${child.myBalance}</td>
       <td id="exposureLimit1" style="display: none">0.00</td>
       <td id="available1" style="display: table-cell">165.40</td>
-      <td id="refPL1" style=>758.86</td>
+      <td id="refPL1">${(child.myBalance+child.exposureLimit)-child.fixLimit}</td>
       <td id="statusCol">
         <span id="status1" class="status-active" >
           <img src="img/transparent.gif" />Active
@@ -257,6 +295,11 @@ for (let i = 0; i < data.length; i++) {
       </td>
     </tr>`;
 }
+totalExposureField.innerHTML=totalExposureData;
+totalAvailBal.innerHTML=totalAvailableBalanceData;
+totalBalance.innerHTML=totalExposureData+totalAvailableBalanceData;
+availableBalanceData=balanceData;
+availableBalance.innerHTML=availableBalanceData;
 }
 
 getAllChild(currentPage,itemsPerPage);
@@ -280,7 +323,7 @@ for (let i = 0; i < filterUser.length; i++) {
         <a id="account0" class="ico_account"><span class="lv_4" style="background:#568BC8;">DIR</span>${child.userid}</a>
       </td>
       <td class="credit-amount-member">
-        <a id="creditRefBtn" class="favor-set" href="#">0.00 </a>
+        <a id="creditRefBtn" class="favor-set" href="#">${child.fixLimit} </a>
       </td>
       <td id="balance1">
         <a href="#" class="link-open">758.86 </a>
@@ -369,17 +412,6 @@ try {
   }
 } catch (error) {
   console.error("Error:", error);
-}
-}
-
-async function logout() {
-sessionStorage.removeItem("data");
-const response = await fetch("http://3.0.102.63:7074/exuser/logout");
-const data = await response.json();
-console.log(data);
-if(data.type === "success") {
-  window.location.href = '/';
-  return;
 }
 }
 

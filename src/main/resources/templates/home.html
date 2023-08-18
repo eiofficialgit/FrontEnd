@@ -231,16 +231,6 @@
             </li>
           </ul>
         </div>
-        <div style="display: flex" class="downline">
-            <button>owner</button>
-            <button>subadmin</button>
-            <button>miniadmin</button>
-            <button>superadmin</button>
-            <button>supersuper</button>
-            <button>super</button>
-            <button>master</button>
-            <button>user</button>
-        </div>
         <div>
           <span class="add_member" id="mySizeChart">
             <i class="fas fa-user-plus"></i>Add <span id="statusofuser"></span>
@@ -253,12 +243,12 @@
       <div id="totalBox" class="total_box">
         <dl id="totalBalanceDL" class="total_dl">
           <dt>Total Balance</dt>
-          <dd id="totalBalance">PBU 758.86</dd>
+          <dd>PBU <span id="totalBalance"></span></dd>
         </dl>
         <dl id="totalExposureDL" class="total_dl">
           <dt>Total Exposure</dt>
           <dd id="">
-            PBU <span id="totalExposure" style="color: red">20.99</span>
+            PBU <span id="totalExposure" style="color: red"></span>
           </dd>
         </dl>
         <dl id="myCurrentPLDL" class="total_dl" style="display: none">
@@ -267,15 +257,15 @@
         </dl>
         <dl id="availableBalanceDL" class="total_dl">
           <dt>Total Avail. bal.</dt>
-          <dd id="totalAvailBal">PBU 737.87</dd>
+          <dd>PBU <span id="totalAvailBal"></span></dd>
         </dl>
         <dl id="masterBalanceDL" class="total_dl">
           <dt>Balance</dt>
-          <dd id="mastersBalance">PBU 132.00</dd>
+          <dd>PBU <span id="mastersBalance"></span></dd>
         </dl>
         <dl id="masterAvailableBalanceDL" class="total_dl">
           <dt>Available Balance</dt>
-          <dd id="mastersAvailBal">PBU 837.00</dd>
+          <dd>PBU <span id="mastersAvailBal"></span></dd>
         </dl>
         <dl
           id="transferablePLWithUplineDL"
@@ -320,52 +310,28 @@
       </div>
       <!-- Report Table -->
     </div>
-    <div id="paginationList" class="d-flex justify-content-center">
-      <!-- <ul id="pageNumberContent" class="pages">
-        <li id="prev">
-          <a
-            href="javascript:void(0);"
-            class="disable"
-            style="pointer-events: none"
-            >Prev</a
-          >
-        </li>
-        <li id="pageNumber">
-          <a
-            href="javascript:void(0);"
-            class="select"
-            style="pointer-events: none"
-            >1</a
-          >
-        </li>
-        <li id="next">
-          <a
-            href="javascript:void(0);"
-            class="disable"
-            style="pointer-events: none"
-            >Next</a
-          >
-        </li>
-        <input type="text" id="goToPageNumber_1" maxlength="6" size="4" />
-        <a id="goPageBtn_1">GO</a>
-      </ul> -->
+    <div id="paginationList" class="d-flex justify-content-center align-content-center">
       <ul class="pagination">
+        <li class="page-item">
+          <span class="page-link disabled" id="firstpage-btn">First</span>
+        </li>
         <li class="page-item">
           <span class="page-link disabled" id="prev-btn">Previous</span>
         </li>
-        <li class="page-item page-btn" data-page="0">
-          <span class="page-link">1</span>
-        </li>
-        <li class="page-item page-btn" data-page="1">
-          <span class="page-link">2</span>
-        </li>
-        <li class="page-item page-btn" data-page="2">
-          <span class="page-link">3</span>
+        <li class="page-item active">
+          <span class="page-link" id="page-btn"></span>
         </li>
         <li class="page-item" id="next-btn">
           <span class="page-link">Next</span>
         </li>
+        <li class="page-item">
+          <span class="page-link disabled" id="lastpage-btn">Last</span>
+        </li>
       </ul>
+      <div class="d-flex ms-2">
+        <input type="number" style="width: 70px; height: 29px;" id="page-search">
+        <button style="width: 50px; height: 29px; border-radius: 7px; border: none; margin-left: 5px; background-color: #ffc107; box-shadow: 1px 1px black;" onclick="pageFind()">Go</button>
+      </div>
     </div>
     <div class="footer_info">
       <div class="main_wrap">

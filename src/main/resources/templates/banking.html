@@ -6,7 +6,7 @@
 <body style="background-color: #f0ece1;">
     <div class="full-wrap" style="height: calc(100% - 105px)">
         <h2>Banking</h2>
-        <div class="total_all banking-top">
+        <div class="total_all banking-top d-flex align-items-center">
             <div class="search-wrap" id="userSearchUl">
                 <div>
                     <input class="search-input" type="text" name="searchUserId" id="searchUserId"
@@ -33,6 +33,10 @@
                 </li>
             </ul>
         </div>
+        <div class="banking-head">
+            <div class="text"><h6><strong>Your Balance</strong></h6></div>
+            <div class="d-flex align-items-center ms-3"><p class="baltext"><strong>PBU</strong></p><span class="ms-2" id="balance">120000</span></div>
+        </div>
         <!-- Report Table -->
         <table id="table_log" class="table01">
             <thead>
@@ -48,9 +52,32 @@
                   <th id="hlgs" class="align-L hd">logs</th>
                </tr>
             </thead>
-            <tbody id="content">
+            <tbody id="childs">
             </tbody>
          </table>
+         <div id="paginationList" class="d-flex justify-content-center align-content-center">
+            <ul class="pagination">
+              <li class="page-item">
+                <span class="page-link disabled" id="firstpage-btn">First</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="prev-btn">Previous</span>
+              </li>
+              <li class="page-item active">
+                <span class="page-link" id="page-btn"></span>
+              </li>
+              <li class="page-item" id="next-btn">
+                <span class="page-link">Next</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="lastpage-btn">Last</span>
+              </li>
+            </ul>
+            <div class="d-flex ms-2">
+              <input type="number" style="width: 70px; height: 29px;" id="page-search">
+              <button style="width: 50px; height: 29px; border-radius: 7px; border: none; margin-left: 5px; background-color: #ffc107; box-shadow: 1px 1px black;" onclick="pageFind()">Go</button>
+            </div>
+          </div>
         <div class="submit-wrap" id="settlementBar">
             <ul class="d-flex bank-ulft">
                 <li><a id="clearAllBtn" href="javascript:void(0);" class="btn">Clear All</a></li>
