@@ -29,7 +29,7 @@
             <!-- top right  -->
             <div class="right right-login">
                 <a id="ownername"></a>
-                <a><span>main</span>PIN 0.00</a>
+                <a><span>main</span>PBU <strong id="mastersBalance" style="font-size: large;"></strong></a>
                 <a href="#" class="img-cricle balance">
                     <img src="./img/transparent.gif">
                 </a>
@@ -98,32 +98,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
     <script th:src="@{'/js/' + ${js}}"></script>
     <script>
-		    // Get the modal
-		var ebModal = document.getElementById('mySizeChartModal');
-		
-		// Get the button that opens the modal
-		var ebBtn = document.getElementById("mySizeChart");
-		
-		// Get the <span> element that closes the modal
-		var ebSpan = document.getElementsByClassName("ebcf_close")[0];
-		
-		// When the user clicks the button, open the modal 
-		ebBtn.onclick = function() {
-		    ebModal.style.display = "block";
-		}
-		
-		// When the user clicks on <span> (x), close the modal
-		ebSpan.onclick = function() {
-		    ebModal.style.display = "none";
-		}
-		
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-		    if (event.target == ebModal) {
-		        ebModal.style.display = "none";
-		    }
-		}
-
+        
         async function logout() {
             sessionStorage.removeItem("data");
             const response = await fetch("http://3.0.102.63:7074/exuser/logout");
@@ -133,6 +108,13 @@
             window.location.href = '/';
             return;
             }
+        }
+
+        let data = JSON.parse(sessionStorage?.getItem("data"));
+
+        if(data) {
+            let balance=document.getElementById("mastersBalance");
+            balance.innerHTML=data.myBalance;
         }
 
   </script>

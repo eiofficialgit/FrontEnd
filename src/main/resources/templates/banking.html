@@ -52,7 +52,7 @@
                   <th id="hlgs" class="align-L hd">logs</th>
                </tr>
             </thead>
-            <tbody id="childs">
+             <tbody id="childs">
             </tbody>
          </table>
          <div id="paginationList" class="d-flex justify-content-center align-content-center">
@@ -80,10 +80,10 @@
           </div>
         <div class="submit-wrap" id="settlementBar">
             <ul class="d-flex bank-ulft">
-                <li><a id="clearAllBtn" href="javascript:void(0);" class="btn">Clear All</a></li>
+                <li><button id="clearAllBtn" class="btn" onclick="clearAll()">Clear All</button></li>
                 <li class="submit-payment">
                     <input id="paymentPassword" type="password" placeholder="Password">
-                    <a id="submit" href="" class="btn-send bank-sub">Submit <span id="submitCount">0</span> Payment</a>
+                    <button onclick="submitForm()" id="submit" class="btn-send bank-sub">Submit <span id="submitCount">0</span> Payment</button>
                 </li>
             </ul>
         </div>

@@ -67,20 +67,54 @@ function pageFind(){
   getAllChild(currentPage,itemsPerPage);
 }
 
-window.addEventListener("DOMContentLoaded", (event) => {
-const nextBtn = document.getElementById('next-btn');
-const prevBtn = document.getElementById('prev-btn');
-const firstpageBtn = document.getElementById('firstpage-btn');
-const lastpageBtn = document.getElementById('lastpage-btn');
-pageButtons.innerHTML="";
-if(nextBtn && prevBtn && firstpageBtn && lastpageBtn){
-  nextBtn.addEventListener('click', nextPage);
-  prevBtn.addEventListener('click', prevPage);
-  firstpageBtn.addEventListener('click', firstPage);
-  lastpageBtn.addEventListener('click', lastPage);
-  pageButtons.innerHTML=currentPage+1;
+const inputArray = [];
+let inputCount = 0;
+
+function clearAll() {
+  inputArray.length = 0;
+  const inputFields = document.querySelectorAll('.amountInput');
+  inputFields.forEach(function (inputField) {
+    inputField.value = "";
+  });
+  inputCount = 0;
+  document.getElementById("submitCount").innerText = inputCount;
 }
-});
+
+async function submitForm() {
+  var paymentPassword=document.getElementById("paymentPassword").value;
+  if(paymentPassword === "") {
+    alert("Please Enter Password !");
+    return;
+  }
+  else if(inputArray.length === 0){
+    console.log(inputArray);
+    alert("Please make transactions !");
+    return;
+  }
+  else if(inputArray.length > 0 && paymentPassword !==""){
+    const data={ "password": paymentPassword, "transactions": inputArray};
+    console.log(data);
+    var encryptData=encryptMessage(JSON.stringify(data));
+    const payload={"payload": encryptData};
+    console.log(payload);
+    try {
+      const response = await fetch("http://3.0.102.63:7074/exuser/depositWithdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if(result.status === "success"){
+        alert(result.message);
+        location.reload();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+}
 
 async function getAllChild(currentPage, itemsPerPage) {
 const response = await fetch(`http://3.0.102.63:7074/exuser/allchildwithpagination?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
@@ -106,28 +140,28 @@ for (let i = 0; i < data.length; i++) {
   let child = data[i];
   //totalExposureData=totalExposureData+child.exposureLimit;
   //totalAvailableBalanceData=totalAvailableBalanceData+child.myBalance;
-  childs.innerHTML+=`<tr class="dataofAccount">
-  <td id="ad" class="align-L"><span class="order" style="margin-right: 10px;">${i+1}.</span>${child.userid}</td>
-  <td id="sa" class="align-L">71,690.41</td>
-  <td id="ma" class="align-L">67,750.07</td>
-  <td id="exp" class="align-L red">3,940.34</td>
-  <td id="sm" class="align-L DW-amount">
-    <button id="dbtn" class="dn">D</button><button id="wbtn" class="wd">W</button>
-    <div class="amblock">
-        <span class="amn"></span><input type="text" name="amount" id="amountmain" maxlength="8" placeholder="0" disabled="">
+  childs.innerHTML+=`
+  <tr class="dataofAccount">
+  <td id="ad">${child.userid}</td>
+  <td id="sa">${child.myBalance+child.exposureLimit}</td>
+  <td id="ma">${child.myBalance}</td>
+  <td id="exp" style="color:red;">${child.exposureLimit}</td>
+  <td id="sm" class="d-flex">
+    <button class="dbtn">D</button>
+    <button class="wbtn">W</button>
+    <div style="position: relative;">
+      <input type="number" class="amountInput" dir="rtl" placeholder="0" disabled>
+      <span class="sign"></span>
     </div>
-    <button _ngcontent-fus name="amount" id="amountmain" maxlength="8" placeholder="0" disabled="">
-    </div>
-        <button _ngcontent-xla-c42="" id="dpWdFullBtn" disabled="" style="opacity: 0.5;">Full</button>
+    <button class="dpWdFullBtn" disabled style="opacity: 0.5;">Full</button> 
   </td>
-  <td id="mm" class="align-L credit-amount"><a href="" id="usercreditrefrencemain">0</a><button id="editcreditbtrefrenacemain" data-toggle="modal" data-target="#credRefModal" class="but_suspend openchangepwdmodal icon tdd">Edit</button></td>
-  <td id="agm" class="align-L">
-    <p>1,000.00</p>
+  <td id="mm"><a href="" id="usercreditrefrencemain">${child.fixLimit}</a><button id="editcreditbtrefrenacemain" data-toggle="modal" data-target="#credRefModal" class="but_suspend openchangepwdmodal icon tdd">Edit</button></td>
+  <td id="agm">
+    <p>${(child.myBalance+child.exposureLimit)-child.fixLimit}</p>
   </td>
-  <td id="client" class="align-L"><input type="text" placeholder="Remark" class="remarkInput"></td>
-  <td id="client" class="align-L"><button id="log">Log</button></td>
-</tr>
-<tr class="lastTr"></tr>`;
+  <td id="client"><input type="text" placeholder="Remark" class="remarkInput"></td>
+  <td id="client"><button id="log">Log</button></td>
+</tr>`;
 }
 /*totalExposureField.innerHTML=totalExposureData;
 totalAvailBal.innerHTML=totalAvailableBalanceData;
@@ -136,4 +170,99 @@ availableBalanceData=balanceData;
 availableBalance.innerHTML=availableBalanceData;*/
 }
 
-getAllChild(currentPage,itemsPerPage);
+document.addEventListener("DOMContentLoaded", function () {
+  const nextBtn = document.getElementById('next-btn');
+  const prevBtn = document.getElementById('prev-btn');
+  const firstpageBtn = document.getElementById('firstpage-btn');
+  const lastpageBtn = document.getElementById('lastpage-btn');
+  pageButtons.innerHTML="";
+  
+  if(nextBtn && prevBtn && firstpageBtn && lastpageBtn){
+    nextBtn.addEventListener('click', nextPage);
+    prevBtn.addEventListener('click', prevPage);
+    firstpageBtn.addEventListener('click', firstPage);
+    lastpageBtn.addEventListener('click', lastPage);
+    pageButtons.innerHTML=currentPage+1;
+  }
+
+  getAllChild(currentPage, itemsPerPage).then(() => {
+        const containers = document.querySelectorAll(".dataofAccount");
+        containers.forEach((row, i) => {
+        const depositBtn = row.querySelector(".dbtn");
+        const withdrawBtn = row.querySelector(".wbtn");
+        const amountInput = row.querySelector(".amountInput");
+        const sign = row.querySelector(".sign");
+        const fullBtn = row.querySelector(".dpWdFullBtn");
+        const useridElement = row.querySelector("#ad"); 
+        const myBalanceField = row.querySelector("#ma");
+        const userid = useridElement.textContent;
+    
+        depositBtn.addEventListener("click", function () {
+          depositBtn.classList.add("depositGreen");
+          withdrawBtn.classList.remove("depositRed");
+          sign.innerText = "+";
+          enableDeposit();
+        });
+    
+        withdrawBtn.addEventListener("click", function () {
+          withdrawBtn.classList.add("depositRed");
+          depositBtn.classList.remove("depositGreen");
+          sign.innerText = "-";
+          enableWithdraw();
+        });
+    
+        fullBtn.addEventListener("click", function () {
+          const myBalance = parseFloat(myBalanceField.innerText);
+          amountInput.value = myBalance;
+          updateInputArray(userid, myBalance);
+        });
+    
+        function enableDeposit() {
+          amountInput.disabled = false;
+          fullBtn.disabled = true;
+          fullBtn.style.opacity=0.5;
+          amountInput.classList.remove("danger");
+          amountInput.classList.add("black");
+          sign.style.color = "green";
+        }
+    
+        function enableWithdraw() {
+          amountInput.disabled = false;
+          amountInput.classList.remove("black");
+          amountInput.classList.add("danger");
+          fullBtn.disabled = false;
+          fullBtn.style.opacity=1;
+          sign.style.color = "red";
+        }
+    
+        amountInput.addEventListener("input", function () {
+          const updatedMyBalance = parseFloat(amountInput.value);
+          updateInputArray(userid, updatedMyBalance);
+        });
+
+        function updateInputArray(userid, updatedMyBalance) {
+          if (updatedMyBalance !== 0) {
+            const existingEntryIndex = inputArray.findIndex(item => item.userid === userid);
+            if (existingEntryIndex !== -1) {
+              inputArray[existingEntryIndex] = {
+                userid: userid,
+                myBalance: updatedMyBalance,
+                type: depositBtn.classList.contains("depositGreen") ? "deposit" : "withdraw"
+              };
+            } else {
+              inputArray.push({
+                userid: userid,
+                myBalance: updatedMyBalance,
+                type: depositBtn.classList.contains("depositGreen") ? "deposit" : "withdraw"
+              });
+            }
+            inputCount = inputArray.length;
+            document.getElementById("submitCount").innerText = inputCount;
+          }
+        };
+      });
+    });
+  });
+
+
+

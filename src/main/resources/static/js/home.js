@@ -1,3 +1,29 @@
+ // Get the modal
+ var ebModal = document.getElementById('mySizeChartModal');
+		
+ // Get the button that opens the modal
+ var ebBtn = document.getElementById("mySizeChart");
+ 
+ // Get the <span> element that closes the modal
+ var ebSpan = document.getElementsByClassName("ebcf_close")[0];
+ 
+ // When the user clicks the button, open the modal 
+ ebBtn.onclick = function() {
+     ebModal.style.display = "block";
+ }
+ 
+ // When the user clicks on <span> (x), close the modal
+ ebSpan.onclick = function() {
+     ebModal.style.display = "none";
+ }
+ 
+ // When the user clicks anywhere outside of the modal, close it
+ window.onclick = function(event) {
+     if (event.target == ebModal) {
+         ebModal.style.display = "none";
+     }
+ }
+
 var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
 var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
 
@@ -22,7 +48,8 @@ if(data){
   document.getElementById("ownername").innerText = data.userid;
   let statusofuser=document.getElementById("statusofuser");
   let statusofUSER=document.getElementById("statusofUSER");
-  let balance=document.getElementById("mastersBalance");
+  let balance=document.getElementById("mastersBalance2");
+  let mastersAvailBal=document.getElementById("mastersAvailBal");
   balanceData=data.myBalance;
   balance.innerText=balanceData;
   if(data.usertype == 0 && statusofuser){
@@ -357,61 +384,6 @@ for (let i = 0; i < filterUser.length; i++) {
         </ul>
       </td>
     </tr>`;
-}
-}
-
-function checkUserAvailable(){
-let userid=document.getElementById("userName").value;
-const data = { "userid": `${userid}`};
-var encryptData=encryptMessage(JSON.stringify(data));
-const payload={"payload": encryptData};
-checkOnDatabase(payload);
-}
-
-async function checkUserPassword(){
-  let userPassword=document.getElementById("userPassword").value;
-  let encryptPassword=encryptMessage(userPassword);
-  const data = { "password": `${encryptPassword}`};
-  try {
-    const response = await fetch("http://3.0.102.63:7074/exuser/checkpassword", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    if(result.type === "Error"){
-      document.getElementById("passwordErrorText").innerHTML=`${result.message}`;
-      return;
-    }
-    else if(result.type === "Success"){
-      document.getElementById("userNameErrorText").innerHTML="";
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-async function checkOnDatabase(payload) {
-try {
-  const response = await fetch("http://3.0.102.63:7074/exuser/checkuser", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-  const result = await response.json();
-  if(result.type === "Error"){
-    document.getElementById("userNameErrorText").innerHTML=`${result.message}`;
-    return;
-  }
-  else if(result.type === "Success"){
-    document.getElementById("userNameErrorText").innerHTML="";
-  }
-} catch (error) {
-  console.error("Error:", error);
 }
 }
 

@@ -1918,6 +1918,7 @@ select {
     line-height: 23px;
     font-size: 12px;
     text-align: center;
+    height: 40px;
 }
 .pop_box .add_account_box dl{
     padding: 0 10px;
@@ -2029,9 +2030,6 @@ select {
 .dataofAccount {
     border-bottom: solid 1px #e4e4e4
 }
-.align-L {
-    padding-right: 7px
-}
 #ad {
     font-size: 12px;
     padding: 0 10px 0 17px;
@@ -2046,26 +2044,21 @@ select {
 #sm {
     border-right: 1px solid black
 }
-.DW-amount {
-    display: flex
-}
-#dbtn {
+.dbtn {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border-width: 1px;
     font-size: 14px;
-    color: #3b5160;
     border-color: #c4c9ce;
     height: 30px;
     font-weight: 700;
     width: 33px
 }
-#wbtn {
+.wbtn {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border-width: 1px;
     font-size: 14px;
-    color: #3b5160;
     border-color: #c4c9ce;
     height: 30px;
     font-weight: 700;
@@ -2117,7 +2110,7 @@ td {
     padding-right: 5px;
     padding-bottom: 3px
 }
-#dpWdFullBtn {
+.dpWdFullBtn {
     border-width: 1px;
     font-size: 13px;
     color: #000;
@@ -2216,10 +2209,6 @@ thead {
     box-sizing: border-box;
     font-family: Tahoma, Helvetica, sans-serif;
 }
-.red {
-    color: red;
-    font-size: 10px
-}
 .banking-head{
     display: flex;
     background: #E0E6E6;
@@ -2249,4 +2238,35 @@ thead {
     padding-top: 12PX;
     color: #3b5160;
 }
-
+.dataofAccount input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.dataofAccount .amountInput {
+    width: 130px;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.dataofAccount .sign {
+    font-size: 20px;
+    margin-right: 5px;
+    position: absolute;
+    left: 10px;
+    top: 3px;
+  }
+ .depositGreen {
+    background-color: green;
+    color: white;
+  }
+.depositRed {
+    background-color: red;
+    color: white;
+  }
+ .danger{
+    color: red;
+  }
+  .black {
+    color: black;
+  }
