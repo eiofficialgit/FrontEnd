@@ -106,7 +106,7 @@ async function submitForm() {
         body: JSON.stringify(payload),
       });
       const result = await response.json();
-      if(result.status === "success"){
+      if(result){
         alert(result.message);
         location.reload();
       }
