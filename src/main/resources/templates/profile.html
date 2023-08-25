@@ -43,11 +43,11 @@
                         <h3>About You</h3>
                         <dl>
                             <dt>First Name</dt>
-                            <dd>demouser</dd>
+                            <dd id="fname"></dd>
                         </dl>
                         <dl>
                             <dt>Last Name</dt>
-                            <dd>demouser</dd>
+                            <dd id="lname"></dd>
                         </dl>
                         <dl>
                             <dt>Birthday</dt>
@@ -55,19 +55,19 @@
                         </dl>
                         <dl>
                             <dt>E-mail</dt>
-                            <dd>abc@gmail.com</dd>
+                            <dd id="email"></dd>
                         </dl>
                         <dl>
                             <dt>Password</dt>
                             <dd>********************************
-                                <a href="#" class="favor-set" onclick="editpage()">Edit
+                                <span style="cursor: pointer; color: blue;" class="favor-set" id="openBtn">Edit
                                     <i class="fas fa-pen"></i>
-                                </a>
+                                </span>
                             </dd>
                         </dl>
                         <dl>
                             <dt>Time Zone</dt>
-                            <dd>IST</dd>
+                            <dd id="ist"></dd>
                         </dl>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         <h3>Contact Details</h3>
                         <dl>
                             <dt>Primary number</dt>
-                            <dd></dd>
+                            <dd id="number"></dd>
                         </dl>
                     </div>
                     <div class="profile-wrap" style="display: none;">
@@ -111,43 +111,32 @@
         </div>
     </div>
 
-    <!-- popup start  -->
-    <div id="changePasswordModal" class="pop_bg">
-        <div class="pop_box">
-            <a class="close_pop" href="#" onclick="editpage()"><i class="fa fa-times" aria-hidden="true"></i></a>
-            <h3>Change Password</h3>
-            <dl>
-                <dt>New Password</dt>
-                <dd>
-                    <input id="newPassword" type="password" placeholder="Enter">
-                    <span class="must">＊</span>
-                    <span id="newPasswordErrorText" class="error-text"></span>
-                </dd>
-            </dl>
-            <dl>
-                <dt>New Password<br> Confirm</dt>
-                <dd>
-                    <input id="newPasswordConfirm" type="password" placeholder="Enter">
-                    <span class="must">＊</span>
-                    <span id="newPasswordConfirmErrorText" class="error-text"></span>
-                </dd>
-            </dl>
-            <dl>
-                <dt>Your Password</dt>
-                <dd>
-                    <input id="changePassword" type="password" placeholder="Enter">
-                    <span class="must">＊</span>
-                </dd>
-
-            </dl>
-            <dl class="pupup-change">
-                <dd></dd>
-                <dd><a id="changePasswordBtn" href="#" class="btn-send">Change</a>
-                </dd>
-            </dl>
-
+    <div class="overlayBanking" id="overlayBankingPage"></div>
+         <div id="popup" class="popup">
+          <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+            <h2>Change Password</h2>
+            <span class="close" id="closeBtn">&times;</span>
+          </div>
+          <div class="p-1 ps-5 pe-5 pt-2 pb-1">
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <label for="field1"><small>New Password</small></label>
+          <input type="password" id="field1" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field2"><small>New Password Confirm</small></label>
+          <input type="password" id="field2" placeholder="Enter" style="width: 100%;"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field3"><small>Your Password</small></label>
+          <input type="password" id="field3" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          </div>
+          <div class="text-center border border-top p-2">
+            <button id="submitBtn">Submit</button>
+          </div>
         </div>
-    </div>
-    <!-- popup End  -->
 </body>
 </html>

@@ -37,7 +37,7 @@
         <!-- Center Column -->
         <div class="col-center report">
             <h2>Activity Log</h2>
-            <table class="table01">
+            <table class="table01" style="overflow-y: scroll; height: 64vh;">
                 <tbody>
                     <tr>
                         <th width="15%" class="align-L">Login Date &amp; Time
@@ -55,82 +55,31 @@
                     </tr>
                 </tbody>
                 <tbody id="content">
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-20 11:12:49</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-19 15:11:44</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-19 13:32:00</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-19 11:14:51</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-18 16:41:03</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-18 13:22:40</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">122.176.212.101</td>
-                        <td id="isp">Bharti Airtel Ltd.</td>
-                        <td id="location">Gurgaon, Haryana, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-18 13:21:42</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">125.63.123.112</td>
-                        <td id="isp">Shyam Spectra Pvt Ltd</td>
-                        <td id="location">Delhi, Delhi, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
-                    <tr id="tempTr">
-                        <td class="align-L" id="loginDate">2021-10-18 13:19:19</td>
-                        <td class="align-L green" id="loginMessage">Login Success</td>
-                        <td id="ipAddress">125.63.123.112</td>
-                        <td id="isp">Shyam Spectra Pvt Ltd</td>
-                        <td id="location">Delhi, Delhi, IN</td>
-                        <td id="userAgentType">Browser</td>
-                    </tr>
                 </tbody>
             </table>
-            <div>
-                <ul id="pageNumberContent" class="pages">
-                    <li id="prev"><a href="javascript:void(0);" class="disable" style="pointer-events: none;">Prev</a>
-                    </li>
-                    <li id="pageNumber"><a href="javascript:void(0);" class="select" style="pointer-events: none;">1</a>
-                    </li>
-                    <li id="next"><a href="javascript:void(0);" class="disable" style="pointer-events: none;">Next</a>
-                    </li>
+            <div id="paginationList" class="d-flex justify-content-center align-content-center">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <span class="page-link disabled" id="firstpage-btn">First</span>
+                  </li>
+                  <li class="page-item">
+                    <span class="page-link disabled" id="prev-btn">Previous</span>
+                  </li>
+                  <li class="page-item">
+                    <span class="page-link" style="background-color: #ffc107;" id="page-btn">1</span>
+                  </li>
+                  <li class="page-item" id="next-btn">
+                    <span class="page-link">Next</span>
+                  </li>
+                  <li class="page-item">
+                    <span class="page-link disabled" id="lastpage-btn">Last</span>
+                  </li>
                 </ul>
-            </div>
+                <div class="d-flex ms-2">
+                  <input type="number" style="width: 70px; height: 29px;" id="page-search">
+                  <button style="width: 50px; height: 29px; border-radius: 7px; border: none; margin-left: 5px; background-color: #ffc107; box-shadow: 1px 1px black;" onclick="pageFind()">Go</button>
+                </div>
+              </div>
         </div>
     </div>
 </body>

@@ -315,7 +315,7 @@
             <li class="page-item">
               <span class="page-link disabled" id="prev-btn">Previous</span>
             </li>
-            <li class="page-item" >
+            <li class="page-item">
               <span class="page-link" style="background-color: #ffc107;" id="page-btn"></span>
             </li>
             <li class="page-item" id="next-btn">
@@ -424,7 +424,7 @@
                 <dl>
                     <dt>Username</dt>
                     <dd>
-                        <input id="userName" type="text" placeholder="Enter here" maxlength="16">
+                        <input id="userName" type="text" placeholder="Enter here" maxlength="16" onblur="checkUserAvailable()">
                         <span class="must">*</span>
                         <br>
                         <span id="userNameErrorText" class="error-text"></span>
@@ -433,7 +433,7 @@
                 <dl>
                     <dt>Password</dt>
                     <dd>
-                        <input id="userPassword" type="password" placeholder="Enter here">
+                        <input id="userPassword" type="password" placeholder="Enter here" onblur="checkUserPassword()">
                         <span class="must">*</span>
                         <br>
                         <span id="passwordErrorText" class="error-text"></span>

@@ -2,6 +2,7 @@ package com.skyexchange.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -17,6 +18,16 @@ public class MainController {
 	public String home(Model model) {
 		model.addAttribute("title", "Home - Sky Exchange");
 		model.addAttribute("js", "home.js");
+		return "home";
+	}
+
+	@RequestMapping("/home/{id}/{usertype}")
+	public String parentChildHome(Model model, @PathVariable String id, @PathVariable String usertype) {
+		if(id != null && usertype != null){
+			model.addAttribute("title", "Home - Sky Exchange");
+			model.addAttribute("js", "parentchildhome.js");
+			return "parentchildhome";
+		}
 		return "home";
 	}
 
