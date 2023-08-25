@@ -77,7 +77,7 @@ const openBtn = document.getElementById('openBtn');
             const encryptData=encryptMessage(JSON.stringify(data));
             const payload={"payload": encryptData};
             try {
-                const response = await fetch("http://localhost:7074/exuser/changeCurrentPassword", {
+                const response = await fetch("http://3.0.102.63:7074/exuser/changeCurrentPassword", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

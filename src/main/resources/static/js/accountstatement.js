@@ -66,7 +66,7 @@ async function pageFind() {
 }
 
 async function showAccountStatement(currentPage, itemsPerPage){
-  const response = await fetch(`http://localhost:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+  const response = await fetch(`http://3.0.102.63:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const activityData = await response.json();
   const encryptedData=activityData.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
