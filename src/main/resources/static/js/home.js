@@ -114,7 +114,7 @@ function saveUser() {
 
 async function saveUserInMongo(payload) {
   try {
-    const response = await fetch("http://localhost:7074/exuser/validateUserCreation", {
+    const response = await fetch("http://3.0.102.63:7074/exuser/validateUserCreation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -169,7 +169,7 @@ async function saveUserInMongo(payload) {
 }
 
 async function getAllWebsites() {
-  const response = await fetch("http://localhost:7074/exuser/allWebsite");
+  const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
   const websites = await response.json();
   const encryptedData = websites.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -237,7 +237,7 @@ async function pageFind() {
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-  const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+  const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const childs = await response.json();
   const encryptedData = childs.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -406,7 +406,7 @@ async function showPopup(currentBalance, userid) {
       var encryptData = encryptMessage(JSON.stringify(data));
       const payload = { "payload": encryptData };
       try {
-        const response = await fetch("http://localhost:7074/exuser/creditReference", {
+        const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -467,7 +467,7 @@ searchBtn.addEventListener('click',async function () {
 });
 
 async function searchUser(currentPage, itemsPerPage, userId) {
-  const response = await fetch(`http://localhost:7074/exuser/search?pageNumber=${currentPage}&pageSize=${itemsPerPage}&keywords=${userId}`);
+  const response = await fetch(`http://3.0.102.63:7074/exuser/search?pageNumber=${currentPage}&pageSize=${itemsPerPage}&keywords=${userId}`);
   const result = await response.json();
   const encryptedData = result.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
