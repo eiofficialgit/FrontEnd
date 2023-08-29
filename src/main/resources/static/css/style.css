@@ -844,6 +844,7 @@ option {
 }
 .lv_3 {
     background: #85B352;
+    padding: 3px !important;
 }
 .agent_path-L span {
     margin-top: 7px;
@@ -2357,4 +2358,13 @@ thead {
   .bankig-main{
     height: 60vh;
     overflow-y: scroll;
+  }
+
+  .downlinelistBtn{
+    padding: 2px 12px;
+    color: #1E1E1E;
+    font-weight: bold;
+    border: none;
+    border: 1px solid black;
+    border-radius: 2px ;
   }

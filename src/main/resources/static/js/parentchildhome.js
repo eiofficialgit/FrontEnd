@@ -24,28 +24,10 @@ window.onclick = function (event) {
     }
 }
 
-var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
-var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
-
-function encryptMessage(data) {
-    return CryptoJS.AES.encrypt(data, parsedBase64Key, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    }).toString();
-}
-
-function decryptMessage(data) {
-    return CryptoJS.AES.decrypt(data, parsedBase64Key, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    }).toString(CryptoJS.enc.Utf8);
-}
-
 var balanceData = 0;
 function setData() {
     let data = JSON.parse(sessionStorage?.getItem("data"));
     if (data) {
-        document.getElementById("ownername").innerText = data.userid;
         let statusofuser = document.getElementById("statusofuser");
         let statusofUSER = document.getElementById("statusofUSER");
         let balance = document.getElementById("mastersBalance2");
@@ -115,7 +97,7 @@ function saveUser() {
 
 async function saveUserInMongo(payload) {
     try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/validateUserCreation", {
+        const response = await fetch("http://localhost:7074/exuser/validateUserCreation", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -171,7 +153,7 @@ async function saveUserInMongo(payload) {
 }
 
 async function getAllWebsites() {
-    const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
+    const response = await fetch("http://localhost:7074/exuser/allWebsite");
     const websites = await response.json();
     const encryptedData = websites.data;
     var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -239,7 +221,7 @@ async function pageFind() {
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-    const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+    const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
     const childs = await response.json();
     const encryptedData = childs.data;
     var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -341,6 +323,8 @@ async function getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPag
     setPageListeners();
 }
 
+const userLinksArray = [];
+
 document.addEventListener("DOMContentLoaded", function () {
     const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
@@ -378,12 +362,72 @@ document.addEventListener("DOMContentLoaded", function () {
     var matches = href.match(pattern);
     if (matches) {
         var id = matches[1];
-        var usertype = matches[2];
+        var usertype = parseInt(matches[2]);
+        switch (usertype) {
+            case 2:
+                userTypeButtons = [
+                    { name: "O", id: "owner", userType: 0 },
+                    { name: "SUA", id: "subadmin", userType: 1 }
+                ];
+                break;
+            case 3:
+                userTypeButtons = [
+                    { name: "O", id: "owner", userType: 0 },
+                    { name: "SUA", id: "subadmin", userType: 1 },
+                    { name: "MIA", id: "miniadmin", userType: 2 }
+                ];
+                break;
+            case 4:
+                userTypeButtons = [
+                    { name: "O", id: "owner", userType: 0 },
+                    { name: "SUA", id: "subadmin", userType: 1 },
+                    { name: "MIA", id: "miniadmin", userType: 2 },
+                    { name: "SUS", id: "supersuper", userType: 3 }
+                ];
+                break;
+            case 5:
+                userTypeButtons = [
+                    { name: "O", id: "owner", userType: 0 },
+                    { name: "SUA", id: "subadmin", userType: 1 },
+                    { name: "MIA", id: "miniadmin", userType: 2 },
+                    { name: "SUS", id: "supersuper", userType: 3 },
+                    { name: "SUM", id: "supermaster", userType: 4 }
+                ];
+                break;
+            case 6:
+                userTypeButtons = [
+                    { name: "O", id: "owner", userType: 0 },
+                    { name: "SUA", id: "subadmin", userType: 1 },
+                    { name: "MIA", id: "miniadmin", userType: 2 },
+                    { name: "SUS", id: "supersuper", userType: 3 },
+                    { name: "SUM", id: "supermaster", userType: 4 },
+                    { name: "M", id: "master", userType: 5 }
+                ];
+                break;
+            default:
+                console.log("User type not recognized");
+                break;
+        }
+        appendUserTypeButtons(userTypeButtons);
         getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
-    } else {
-        console.log("Pattern did not match");
     }
 });
+
+function appendUserTypeButtons(buttonsArray) {
+    const userTypeButtonsContainer = document.getElementById('userTypeButtonsContainer');
+    userTypeButtonsContainer.innerHTML = '';
+    buttonsArray.forEach(buttonInfo => {
+        const button = document.createElement('button');
+        button.className="downlinelistBtn"
+        button.id = buttonInfo.id;
+        button.innerText = buttonInfo.name;
+        button.addEventListener('click', function() {
+            const redirectUrl = `/${buttonInfo.id}/${buttonInfo.userType}`;
+            window.location.href = redirectUrl;
+        });
+        userTypeButtonsContainer.appendChild(button);
+    });
+}
 
 async function showPopup(currentBalance, userid) {
     const popup = document.getElementById("popup");
@@ -412,7 +456,7 @@ async function showPopup(currentBalance, userid) {
             var encryptData = encryptMessage(JSON.stringify(data));
             const payload = { "payload": encryptData };
             try {
-                const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+                const response = await fetch("http://localhost:7074/exuser/creditReference", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

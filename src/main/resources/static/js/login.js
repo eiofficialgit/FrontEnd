@@ -10,6 +10,12 @@ function editpage(){
   document.getElementById('changePasswordModal').classList.toggle('show')
 }
 
+
+const form = document.getElementById('myForm');
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+});
+
 var captcha;
 var usernamep=document.getElementById("usernamep");
 var passwordp=document.getElementById("passwordp");
@@ -89,7 +95,7 @@ if(username !== "" && username !== "null" && password !== "" && password !== "nu
 
 async function fetchLogin(payload) {
 try {
-  const response = await fetch("http://3.0.102.63:7074/exuser/managementHome", {
+  const response = await fetch("http://localhost:7074/exuser/managementHome", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

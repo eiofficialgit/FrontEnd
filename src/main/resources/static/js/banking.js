@@ -17,7 +17,7 @@ return CryptoJS.AES.decrypt( data, parsedBase64Key, {
 }
 
 var currentPage = 0;
-var itemsPerPage = 7;
+var itemsPerPage = 10;
 var totalPages=0;
 var pageButtons = document.getElementById('page-btn');
 pageButtons.innerHTML=currentPage+1;
@@ -94,7 +94,7 @@ async function submitForm() {
     var encryptData=encryptMessage(JSON.stringify(data));
     const payload={"payload": encryptData};
     try {
-      const response = await fetch("http://3.0.102.63:7074/exuser/depositWithdraw", {
+      const response = await fetch("http://localhost:7074/exuser/depositWithdraw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,8 +112,8 @@ async function submitForm() {
   }
 }
 
-async function getAllChild(currentPage, itemsPerPage) {
-const response = await fetch(`http://3.0.102.63:7074/exuser/allchildwithpagination?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+async function getAllChild(id, usertype, currentPage, itemsPerPage) {
+const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
 const childs = await response.json();
   const encryptedData=childs.data;
   var decryptData=JSON.parse(decryptMessage(encryptedData));
@@ -191,6 +191,7 @@ async function setPageListeners() {
   
       fullBtn.addEventListener("click", function () {
         const myBalance = parseFloat(myBalanceField.innerText);
+        amountInput.value = myBalance;
         updateInputArray(userid, myBalance);
       });
   
@@ -277,7 +278,7 @@ async function showPopup(currentBalance, userid) {
       var encryptData=encryptMessage(JSON.stringify(data));
       const payload={"payload": encryptData};
       try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+        const response = await fetch("http://localhost:7074/exuser/creditReference", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -318,7 +319,12 @@ async function showPopup(currentBalance, userid) {
 }
 
   async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
-    await getAllChild(currentPage, itemsPerPage);
+    let data = JSON.parse(sessionStorage?.getItem("data"));
+    if(data){
+        let id=data.id;
+        let usertype = data.usertype+1;
+        await getAllChild(id, usertype, currentPage, itemsPerPage);
+    }
     setPageListeners();
   }
 
@@ -352,6 +358,6 @@ async function showPopup(currentBalance, userid) {
       });
       pageButtons.innerHTML = currentPage + 1;
     }
-    getAllChildAndSetListeners(currentPage, itemsPerPage);
+        getAllChildAndSetListeners(currentPage, itemsPerPage);
     });
 

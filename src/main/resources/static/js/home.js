@@ -45,7 +45,6 @@ var balanceData = 0;
 function setData() {
   let data = JSON.parse(sessionStorage?.getItem("data"));
   if (data) {
-    document.getElementById("ownername").innerText = data.userid;
     let statusofuser = document.getElementById("statusofuser");
     let statusofUSER = document.getElementById("statusofUSER");
     let balance = document.getElementById("mastersBalance2");
@@ -115,7 +114,7 @@ function saveUser() {
 
 async function saveUserInMongo(payload) {
   try {
-    const response = await fetch("http://3.0.102.63:7074/exuser/validateUserCreation", {
+    const response = await fetch("http://localhost:7074/exuser/validateUserCreation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -128,7 +127,6 @@ async function saveUserInMongo(payload) {
       location.reload();
     }
     else if (result.status === "Error") {
-      console.log(result);
       let emailErrorText = document.getElementById("emailErrorText");
       let userNameErrorText = document.getElementById("userNameErrorText");
       let websiteErrorText = document.getElementById("websiteErrorText");
@@ -152,8 +150,8 @@ async function saveUserInMongo(payload) {
       else if (result.message === "User Id Must be Required") {
         userNameErrorText.innerHTML = "User Id Must be Required !";
       }
-      else if (result.message === "Password Must contains 1 Upper Case, 1 Lowe Case & 1 Numeric Value & in Between 8-15 Charachter") {
-        passwordErrorText.innerHTML = "Password Must contains 1 Upper Case, 1 Lowe Case & 1 Numeric Value & in Between 10-15 Charachter !";
+      else if (result.message === "Password Must contains 1 Upper Case, 1 Lower Case & 1 Numeric Value & in Between 8-15 Charachter") {
+        passwordErrorText.innerHTML = "Password Must contains 1 Upper Case, 1 Lower Case & 1 Numeric Value & in Between 8-15 Charachter !";
       }
       else if (result.message === "Enter FirstName") {
         firstNameErrorText.innerHTML = "Enter FirstName !";
@@ -171,7 +169,7 @@ async function saveUserInMongo(payload) {
 }
 
 async function getAllWebsites() {
-  const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
+  const response = await fetch("http://localhost:7074/exuser/allWebsite");
   const websites = await response.json();
   const encryptedData = websites.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -190,7 +188,7 @@ async function showAllWebsites() {
 }
 
 var currentPage = 0;
-var itemsPerPage = 7;
+var itemsPerPage = 10;
 var totalPages = 0;
 var pageButtons = document.getElementById('page-btn');
 pageButtons.innerHTML = currentPage + 1;
@@ -199,25 +197,25 @@ async function nextPage() {
     currentPage++;
   }
   pageButtons.innerHTML = currentPage + 1;
-  await getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+  await getAllChildAndSetListeners(currentPage, itemsPerPage);
 }
 
 async function prevPage() {
   currentPage--;
   pageButtons.innerHTML = currentPage + 1;
-  await getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+  await getAllChildAndSetListeners(currentPage, itemsPerPage);
 }
 
 async function firstPage() {
   currentPage = 0;
   pageButtons.innerHTML = currentPage + 1;
-  await getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+  await getAllChildAndSetListeners(currentPage, itemsPerPage);
 }
 
 async function lastPage() {
   currentPage = totalPages - 1;
   pageButtons.innerHTML = currentPage + 1;
-  await getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+  await getAllChildAndSetListeners(currentPage, itemsPerPage);
 }
 
 async function pageFind() {
@@ -235,11 +233,11 @@ async function pageFind() {
     }
   }
   pageButtons.innerHTML = currentPage + 1;
-  await getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+  await getAllChildAndSetListeners(currentPage, itemsPerPage);
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-  const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+  const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const childs = await response.json();
   const encryptedData = childs.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -336,12 +334,19 @@ async function setPageListeners() {
   });
 };
 
-async function getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage) {
-  await getAllChild(id, usertype, currentPage, itemsPerPage);
+async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
+  let data = JSON.parse(sessionStorage?.getItem("data"));
+    if(data){
+        let id=data.id;
+        let usertype = data.usertype+1;
+        await getAllChild(id, usertype, currentPage, itemsPerPage);
+    }
   setPageListeners();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  setData();
+  showAllWebsites();
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
   const firstpageBtn = document.getElementById('firstpage-btn');
@@ -352,33 +357,26 @@ document.addEventListener("DOMContentLoaded", function () {
     nextBtn.addEventListener('click', function () {
       if (currentPage < totalPages - 1) {
         nextPage();
-        getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+        getAllChildAndSetListeners(currentPage, itemsPerPage);
       }
     });
     prevBtn.addEventListener('click', function () {
       if (currentPage > 0) {
         prevPage();
-        getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+        getAllChildAndSetListeners(currentPage, itemsPerPage);
       }
     });
     firstpageBtn.addEventListener('click', function () {
       firstPage();
-      getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+      getAllChildAndSetListeners(currentPage, itemsPerPage);
     });
     lastpageBtn.addEventListener('click', function () {
       lastPage();
-      getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
+      getAllChildAndSetListeners(currentPage, itemsPerPage);
     });
     pageButtons.innerHTML = currentPage + 1;
   }
-  setData();
-  showAllWebsites();
-  let data = JSON.parse(sessionStorage?.getItem("data"));
-    if(data){
-        let id=data.id;
-        let usertype = data.usertype+1;
-        getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPage);
-    }
+  getAllChildAndSetListeners(currentPage, itemsPerPage);
 });
 
 async function showPopup(currentBalance, userid) {
@@ -408,7 +406,7 @@ async function showPopup(currentBalance, userid) {
       var encryptData = encryptMessage(JSON.stringify(data));
       const payload = { "payload": encryptData };
       try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+        const response = await fetch("http://localhost:7074/exuser/creditReference", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -458,58 +456,24 @@ function hideOverlay() {
   overlay.style.display = 'none';
 }
 
-/*async function userSearch(){
-  const response = await fetch("http://3.0.102.63:7074/exuser/allchild");
-  const allChilds = await response.json();
-  const encryptedData=allChilds.data;
-  var decryptData=JSON.parse(decryptMessage(encryptedData));
-  var stage=JSON.parse(decryptData.payload);
-  var data=JSON.parse(stage.data);
-  let childs = document.getElementById("childs");
-  childs.innerHTML="";
-  let userId=document.getElementById("userId").value.toLowerCase();
-  let filterUser=data.filter(child => child.userid === userId);
-  for (let i = 0; i < filterUser.length; i++) {
-    let child = filterUser[i];
-    childs.innerHTML+=`
-        <tr id="sadmin" style="display: table-row;text-align: end;" main_userid="sadmin">
-        <td id="accountCol" style="text-align: start;" class="align-L">
-          <a id="account0" class="ico_account"><span class="lv_4" style="background:#568BC8;">DIR</span>${child.userid}</a>
-        </td>
-        <td class="credit-amount-member">
-          <a id="creditRefBtn" class="favor-set" href="#">${child.fixLimit} </a>
-        </td>
-        <td id="balance1">
-          <a href="#" class="link-open">758.86 </a>
-        </td>
-        <td style="color: red">
-          <span style="cursor: pointer;width: 67px;text-align: center; display: inline-block;"class="status-suspend">20.99</span>
-        </td>
-        <td id="available1">737.87</td>
-        <td id="exposureLimit1" style="display: none">0.00</td>
-        <td id="available1" style="display: table-cell">165.40</td>
-        <td id="refPL1" style=>758.86</td>
-        <td id="statusCol">
-          <span id="status1" class="status-active" >
-            <img src="img/transparent.gif" />Active
-          </span>
-        </td>
-        <td id="actionCol" class="actionCol">
-          <ul class="action">
-            <li>
-              <a id="p_l1" class="p_l"><span><i class="fas fa-long-arrow-up"></i><i class="fas fa-long-arrow-down"></i></span></a>
-            </li>
-            <li>
-              <a id="betting_history1" class="betting_history"><span><i class="fas fa-line-height"></i></span></a>
-            </li>
-            <li>
-              <a class="status"><span><i class="fas fa-cog"></i></span></a>
-            </li>
-            <li>
-              <a class="profile"><span><i class="fas fa-user-alt"></i></span></a>
-            </li>
-          </ul>
-        </td>
-      </tr>`;
+const searchBtn = document.getElementById('searchUserId');
+searchBtn.addEventListener('click',async function () {
+  const userId = document.getElementById('userId').value.toLowerCase();
+  if (userId.trim() !== "") {
+    searchUser(currentPage, itemsPerPage, userId.trim());
+  } else {
+    alert("Please enter a valid User ID !");
   }
-  }*/
+});
+
+async function searchUser(currentPage, itemsPerPage, userId) {
+  const response = await fetch(`http://localhost:7074/exuser/search?pageNumber=${currentPage}&pageSize=${itemsPerPage}&keywords=${userId}`);
+  const result = await response.json();
+  const encryptedData = result.data;
+  var decryptData = JSON.parse(decryptMessage(encryptedData));
+  var stage = JSON.parse(decryptData.payload);
+  console.log(stage.content);
+  showAllChild(stage.content);
+  totalPages = stage.totalPages;
+}
+

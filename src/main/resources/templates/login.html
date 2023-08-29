@@ -18,7 +18,8 @@
             </div>
             <div class="index-form">
                 <h2>Agent login</h2>
-                <input type="text" placeholder="Username" id="username" onkeyup="checkUsername()">
+                <form id="myForm">
+                    <input type="text" placeholder="Username" id="username" onkeyup="checkUsername()">
                 <p class="text-danger fw-bold" id="usernamep"></p>
                 <input type="password" placeholder="Password" id="password" onkeyup="checkPassword()">
                 <p class="text-danger fw-bold" id="passwordp"></p>
@@ -29,6 +30,7 @@
                 <p class="text-danger fw-bold" id="captchap"></p>
                 <button onClick="login()"><i class="fa fa-share-square" aria-hidden="true"
                             style="padding-left: 4px;"></i>Login</button>
+                </form>
             </div>
         </div>
     </div>

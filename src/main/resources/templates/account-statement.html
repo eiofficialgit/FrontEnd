@@ -10,10 +10,9 @@
             <ul id="agentPath" class="agent_path-L">
                 <li id="path3" class="last_li">
                     <a href="javascript: void(0);">
-                        <span class="lv_3">
-                            MA
+                        <span class="lv_3" id="accountSub">
                         </span>
-                        <strong>demoagt12</strong>
+                        <strong id="accountStatementOwner"></strong>
                     </a>
                 </li>
             </ul>
@@ -37,8 +36,8 @@
         <!-- Center Column -->
         <div class="col-center report">
             <h2>Account Statement</h2>
-            <table id="table_log" class="table01" style="overflow-y: scroll; height: 64vh;">
-                <tbody>
+            <table id="table_log" class="table01" style="overflow-y: scroll;">
+                <thead style="height: 30px;">
                     <tr>
                         <th width="15%" class="align-L">Date/Time</th>
                         <th width="13%" class=align-R>Deposit From Upline</th>
@@ -49,7 +48,7 @@
                         <th width="8%" class=align-R>Remark</th>
                         <th width="18%" class=align-R>From/To</th>
                     </tr>
-                </tbody>
+                </thead>
                 <tbody id="content">
                 </tbody>
             </table>

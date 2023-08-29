@@ -24,14 +24,14 @@
     <div class="top-header">
         <div class="container-fluid top">
             <div class="left">
-                <h1><a href="/home"><img src="./img/logo.png"></a></h1>
+                <h1><a href="/home"><img src="/img/logo.png"></a></h1>
             </div>
             <!-- top right  -->
             <div class="right right-login">
                 <a id="ownername"></a>
                 <a><span>main</span>PBU <strong id="mastersBalance" style="font-size: large;"></strong></a>
                 <a href="#" class="img-cricle balance">
-                    <img src="./img/transparent.gif">
+                    <img src="/img/transparent.gif">
                 </a>
                 <p class="loading-bar" id="menuRefreshLoading" style="display: none;">
                     <span></span>
@@ -101,7 +101,7 @@
         
         async function logout() {
             sessionStorage.removeItem("data");
-            const response = await fetch("http://3.0.102.63:7074/exuser/logout");
+            const response = await fetch("http://localhost:7074/exuser/logout");
             const data = await response.json();
             console.log(data);
             if(data.status === "success") {
@@ -110,13 +110,31 @@
             }
         }
 
-        let data = JSON.parse(sessionStorage?.getItem("data"));
+        var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
+        var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
 
-        if(data) {
-            let balance=document.getElementById("mastersBalance");
-            balance.innerHTML=data.myBalance;
+        function encryptMessage (data){
+        return CryptoJS.AES.encrypt(data, parsedBase64Key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+        }).toString();
         }
 
+        function decryptMessage (data){
+        return CryptoJS.AES.decrypt( data, parsedBase64Key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+        } ).toString( CryptoJS.enc.Utf8 );
+        }
+        
+        async function setOwnerData() {
+            const response = await fetch("http://localhost:7074/exuser/loginUser");
+            const result = await response.json();
+            const decryptData=JSON.parse(decryptMessage(result.data));
+            document.getElementById("mastersBalance").innerText=decryptData.myBalance;
+            document.getElementById("ownername").innerText = decryptData.userid;
+        }
+        setOwnerData();
   </script>
   </body>
 </html>

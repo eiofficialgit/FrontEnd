@@ -1,21 +1,4 @@
 /*account-statement page*/
-var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
-var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
-
-function encryptMessage (data){
-return CryptoJS.AES.encrypt(data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  }).toString();
-}
-
-function decryptMessage (data){
-return CryptoJS.AES.decrypt( data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  } ).toString( CryptoJS.enc.Utf8 );
-}
-
 var currentPage = 0;
 var itemsPerPage = 10;
 var totalPages = 0;
@@ -66,7 +49,7 @@ async function pageFind() {
 }
 
 async function showAccountStatement(currentPage, itemsPerPage){
-  const response = await fetch(`http://3.0.102.63:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+  const response = await fetch(`http://localhost:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const activityData = await response.json();
   const encryptedData=activityData.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -80,7 +63,7 @@ function showAllTransactoion(data){
   content.innerHTML="";
     for (let i = 0; i < data.length; i++) {
     let child = data[i];
-    content.innerHTML+=`<tr>
+    content.innerHTML+=`<tr style="height: 30px !important;">
     <td>${child.date_time}</td>
     <td>${child.depositFromUpline}</td>
     <td>-</td>
@@ -128,4 +111,36 @@ document.addEventListener("DOMContentLoaded", function () {
     pageButtons.innerHTML = currentPage + 1;
   }
   getAllTransactoionLog(currentPage, itemsPerPage);
+  
 });
+
+async function setOwnerData() {
+  const response = await fetch("http://localhost:7074/exuser/loginUser");
+  const result = await response.json();
+  const decryptData=JSON.parse(decryptMessage(result.data));
+  console.log(decryptData);
+  document.getElementById("accountStatementOwner").innerText = decryptData.userid;
+  var sub=document.getElementById("accountSub");
+  if(decryptData.usertype === 0){
+      sub.innerText="O";
+  }
+  else if(decryptData.usertype === 1){
+      sub.innerText="SUA";
+  }
+  else if(decryptData.usertype === 2){
+      sub.innerText="MIA";
+  }
+  else if(decryptData.usertype === 3){
+      sub.innerText="SUS";
+  }
+  else if(decryptData.usertype === 4){
+      sub.innerText="SUM";
+  }
+  else if(decryptData.usertype === 5){
+      sub.innerText="M";
+  }
+  else if(decryptData.usertype === 6){
+      sub.innerText="U";
+  }
+}
+setOwnerData();

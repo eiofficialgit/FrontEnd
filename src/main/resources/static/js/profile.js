@@ -1,46 +1,3 @@
-var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
-var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
-
-function encryptMessage (data){
-return CryptoJS.AES.encrypt(data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  }).toString();
-}
-
-function decryptMessage (data){
-return CryptoJS.AES.decrypt( data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  } ).toString( CryptoJS.enc.Utf8 );
-}
-
-function setOwnerData(){
-    let data = JSON.parse(sessionStorage?.getItem("data"));
-    if(data){
-        let firstName=data.firstName;
-        let lastName=data.lastName;
-        let emailData=data.email;
-        let password=data.password;
-        let timeZone=data.timeZone;
-        let mobileNumber=data.mobileNumber;
-
-        let fname=document.getElementById("fname");
-        let lname=document.getElementById("lname");
-        let email=document.getElementById("email");
-        let ist=document.getElementById("ist");
-        let number=document.getElementById("number");
-
-        fname.innerHTML=firstName;
-        lname.innerHTML=lastName;
-        email.innerHTML=emailData;
-        ist.innerHTML=timeZone;
-        number.innerHTML=mobileNumber;
-
-    }
-}
-setOwnerData();
-
 const openBtn = document.getElementById('openBtn');
   const closeBtn = document.getElementById('closeBtn');
   const popup = document.getElementById('popup');
@@ -77,7 +34,7 @@ const openBtn = document.getElementById('openBtn');
             const encryptData=encryptMessage(JSON.stringify(data));
             const payload={"payload": encryptData};
             try {
-                const response = await fetch("http://3.0.102.63:7074/exuser/changeCurrentPassword", {
+                const response = await fetch("http://localhost:7074/exuser/changeCurrentPassword", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -100,3 +57,39 @@ const openBtn = document.getElementById('openBtn');
   };
 
   submitBtn.addEventListener('click', submitForm);
+
+async function setOwnerData() {
+  const response = await fetch("http://localhost:7074/exuser/loginUser");
+  const result = await response.json();
+  const decryptData=JSON.parse(decryptMessage(result.data));
+  console.log(decryptData);
+  document.getElementById("profileOwner").innerText = decryptData.userid;
+  var sub=document.getElementById("profileSub");
+  if(decryptData.usertype === 0){
+      sub.innerText="O";
+  }
+  else if(decryptData.usertype === 1){
+      sub.innerText="SUA";
+  }
+  else if(decryptData.usertype === 2){
+      sub.innerText="MIA";
+  }
+  else if(decryptData.usertype === 3){
+      sub.innerText="SUS";
+  }
+  else if(decryptData.usertype === 4){
+      sub.innerText="SUM";
+  }
+  else if(decryptData.usertype === 5){
+      sub.innerText="M";
+  }
+  else if(decryptData.usertype === 6){
+      sub.innerText="U";
+  }
+  document.getElementById("fname").innerText=decryptData.firstName;
+  document.getElementById("lname").innerText=decryptData.lastName;
+  document.getElementById("email").innerText=decryptData.email;
+  document.getElementById("ist").innerText=decryptData.timeZone;
+  document.getElementById("number").innerText=decryptData.mobileNumber;
+}
+setOwnerData();
