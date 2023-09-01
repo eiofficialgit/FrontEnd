@@ -2320,6 +2320,16 @@ thead {
     padding: 2px 20px;
   }
 
+  #submitBtn1 {
+    padding: 3px;
+    border: none;
+    border: 2px solid #ffa00c;
+    background-color: #ffa00c;
+    border-radius: 3px;
+    font-size: 13px;
+    padding: 2px 20px;
+  }
+
   .logbutton {
     padding: 3px;
     border: none;
@@ -2367,4 +2377,40 @@ thead {
     border: none;
     border: 1px solid black;
     border-radius: 2px ;
+  }
+
+  .adminsettimg{
+    width: 165px; 
+    border:2px solid black; 
+    border-radius: 5px; 
+    margin-left: 8px;
+  }
+
+  .adminsettmain{
+    background-color: #e0e6e6;
+    border-bottom: 1px solid #7e97a7;
+  }
+
+  .websiteAdd{
+    background: #ffa00c;
+    width: 80px;
+    border: 1px solid #cb8009;
+    border-radius: 4px;
+    color: #1e1e1e;
+    font-weight: bold;
+    line-height: 23px;
+    font-size: 12px;
+    padding: 2px;
+  }
+
+  .saveMessage{
+    background: #ffa00c;
+    width: 100px;
+    border: 1px solid #cb8009;
+    border-radius: 4px;
+    color: #1e1e1e;
+    font-weight: bold;
+    line-height: 23px;
+    font-size: 12px;
+    padding: 2px;
   }

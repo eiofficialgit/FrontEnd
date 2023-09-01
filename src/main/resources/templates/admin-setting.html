@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="main_wrap">
+        <div class="row adminsettmain p-2 pt-3">
+            <p class="ms-2"><strong>General Setting</strong></p>
+            <div class="col-md-12 d-flex">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/changepass.png" alt="" id="openBtn" style="cursor: pointer;">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/depositMoney.png" alt="" id="openBtn1" style="cursor: pointer;">
+                <a href="/searchuser"><img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/searchuser.png" alt=""></a>
+                <a href="/websitesetting"><img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/websitesetting.png" alt=""></a>
+                <a href="/surveillance"><img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/surveillance.png" alt=""></a>
+            </div>
+        </div>
+
+        <div class="row adminsettmain p-2 pt-3 mt-2">
+            <p class="ms-2"><strong>Match And Bets</strong></p>
+            <div class="col-md-12 d-flex">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/activelist.png" alt="">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/inactivelist.png" alt="">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/rejectbet.png" alt="">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/updatestatus.png" alt="">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/suspendresult.png" alt="">
+            </div>
+        </div>
+
+        <div class="row adminsettmain p-2 pt-3 mt-2">
+            <p class="ms-2"><strong>Message Settings</strong></p>
+            <div class="col-md-12 d-flex">
+                <a href="/userMessage"><img class="adminsettimg" src="https://ag.7wickets.net/assets/usermessage.png" alt=""></a>
+                <a href="/userImpMessage"><img class="adminsettimg" src="https://ag.7wickets.net/assets/userImpmessage.png" alt=""></a>
+                <a href="/hyperMessage"> <img class="adminsettimg" src="https://ag.7wickets.net/assets/uplineMessage.png" alt=""></a>
+                <a href="/uplineImpMessage"><img class="adminsettimg" src="https://ag.7wickets.net/assets/uplineimpMessage.jpeg" alt=""></a>
+            </div>
+        </div>
+
+        <div class="row adminsettmain p-2 pt-3 mt-2">
+            <p class="ms-2"><strong>User Settings</strong></p>
+            <div class="col-md-12 d-flex">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/inactiveusers.png" alt="">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/betlockuser.png" alt="">
+            </div>
+        </div>
+
+        <div class="row adminsettmain p-2 pt-3 mt-2 mb-2">
+            <p class="ms-2"><strong>Match And Bets</strong></p>
+            <div class="col-md-12 d-flex">
+                <img class="adminsettimg" src="https://ag.wonderbets.in/adminfiles/img/cheatbet.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="overlayBanking" id="overlayBankingPage"></div>
+         <div id="popup" class="popup">
+          <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+            <h2>Change Password</h2>
+            <span class="close" id="closeBtn">&times;</span>
+          </div>
+          <div class="p-1 ps-5 pe-5 pt-2 pb-1">
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <label for="field1"><small>New Password</small></label>
+          <input type="password" id="field1" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field2"><small>Confirm New Password</small></label>
+          <input type="password" id="field2" placeholder="Enter" style="width: 100%;"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field3"><small>Your Password</small></label>
+          <input type="password" id="field3" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          </div>
+          <div class="text-center border border-top p-2">
+            <button id="submitBtn">Submit</button>
+          </div>
+        </div>
+
+        <div id="popup1" class="popup">
+            <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+              <h2>Deposit Chips</h2>
+              <span class="close" id="closeBtn1">&times;</span>
+            </div>
+            <div class="p-1 ps-5 pe-5 pt-4 pb-4 text-center">
+                <p><strong>Current Balance : <span id="adminSettingBalance"></span> PBU</strong></p>
+            <div class="d-flex justify-content-center pt-2">
+            <input type="number" id="field4" placeholder="Add Amount"/>
+            </div>
+            </div>
+            <div class="d-flex justify-content-end border border-top p-2">
+              <button id="submitBtn1">Deposit</button>
+            </div>
+          </div>
+
+        
+</body>
+</html>

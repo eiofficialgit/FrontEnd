@@ -1,21 +1,4 @@
 /*Banking Page*/
-var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
-var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
-
-function encryptMessage (data){
-return CryptoJS.AES.encrypt(data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  }).toString();
-}
-
-function decryptMessage (data){
-return CryptoJS.AES.decrypt( data, parsedBase64Key, {
-  mode: CryptoJS.mode.ECB,
-  padding: CryptoJS.pad.Pkcs7
-  } ).toString( CryptoJS.enc.Utf8 );
-}
-
 var currentPage = 0;
 var itemsPerPage = 10;
 var totalPages=0;
@@ -94,7 +77,7 @@ async function submitForm() {
     var encryptData=encryptMessage(JSON.stringify(data));
     const payload={"payload": encryptData};
     try {
-      const response = await fetch("http://3.0.102.63:7074/exuser/depositWithdraw", {
+      const response = await fetch("http://localhost:7074/exuser/depositWithdraw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +96,7 @@ async function submitForm() {
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
 const childs = await response.json();
   const encryptedData=childs.data;
   var decryptData=JSON.parse(decryptMessage(encryptedData));
@@ -278,7 +261,7 @@ async function showPopup(currentBalance, userid) {
       var encryptData=encryptMessage(JSON.stringify(data));
       const payload={"payload": encryptData};
       try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+        const response = await fetch("http://localhost:7074/exuser/creditReference", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -360,4 +343,12 @@ async function showPopup(currentBalance, userid) {
     }
         getAllChildAndSetListeners(currentPage, itemsPerPage);
     });
+
+    async function setOwnerData() {
+      const response = await fetch("http://localhost:7074/exuser/loginUser");
+      const result = await response.json();
+      const decryptData=JSON.parse(decryptMessage(result.data));
+      document.getElementById("balance").innerText=decryptData.myBalance;
+  }
+  setOwnerData();
 

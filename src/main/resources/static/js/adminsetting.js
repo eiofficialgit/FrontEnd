@@ -13,6 +13,28 @@ const openBtn = document.getElementById('openBtn');
     overlay.style.display = 'none';
   });
 
+  const openBtn1 = document.getElementById('openBtn1');
+  const closeBtn1 = document.getElementById('closeBtn1');
+  const popup1 = document.getElementById('popup1');
+
+  openBtn1.addEventListener('click', () => {
+    popup1.style.display = 'block';
+    overlay.style.display = 'block';
+  });
+
+  closeBtn1.addEventListener('click', () => {
+    popup1.style.display = 'none';
+    overlay.style.display = 'none';
+  });
+
+  async function setOwnerData() {
+    const response = await fetch("http://localhost:7074/exuser/loginUser");
+    const result = await response.json();
+    const decryptData=JSON.parse(decryptMessage(result.data));
+    document.getElementById("adminSettingBalance").innerText=decryptData.myBalance;
+}
+setOwnerData();
+
 
   const submitBtn=document.getElementById('submitBtn');
 
@@ -58,38 +80,39 @@ const openBtn = document.getElementById('openBtn');
 
   submitBtn.addEventListener('click', submitForm);
 
-async function setOwnerData() {
-  const response = await fetch("http://localhost:7074/exuser/loginUser");
-  const result = await response.json();
-  const decryptData=JSON.parse(decryptMessage(result.data));
-  console.log(decryptData);
-  document.getElementById("profileOwner").innerText = decryptData.userid;
-  var sub=document.getElementById("profileSub");
-  if(decryptData.usertype === 0){
-      sub.innerText="O";
-  }
-  else if(decryptData.usertype === 1){
-      sub.innerText="SUA";
-  }
-  else if(decryptData.usertype === 2){
-      sub.innerText="MIA";
-  }
-  else if(decryptData.usertype === 3){
-      sub.innerText="SUS";
-  }
-  else if(decryptData.usertype === 4){
-      sub.innerText="SUM";
-  }
-  else if(decryptData.usertype === 5){
-      sub.innerText="M";
-  }
-  else if(decryptData.usertype === 6){
-      sub.innerText="U";
-  }
-  document.getElementById("fname").innerText=decryptData.firstName;
-  document.getElementById("lname").innerText=decryptData.lastName;
-  document.getElementById("email").innerText=decryptData.email;
-  document.getElementById("ist").innerText=decryptData.timeZone;
-  document.getElementById("number").innerText=decryptData.mobileNumber;
-}
-setOwnerData();
+  const submitBtn1=document.getElementById('submitBtn1');
+
+  async function submitForm1() {
+    const  newDepositAmount= document.getElementById('field4').value;
+    if(!newDepositAmount){
+        alert("* Please Enter your deposit amount !");
+        return;
+    }
+    else {
+          const data={"myBalance": parseInt(newDepositAmount)};
+          const encryptData=encryptMessage(JSON.stringify(data));
+          const payload={"payload": encryptData};
+          try {
+              const response = await fetch("http://localhost:7074/exuser/depositChips", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+              });
+              const result = await response.json();
+              if(result.status === "success") {
+                alert(result.message);
+                location.reload();
+              }
+              else{
+                alert(result.message);
+                return;
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+        }
+  };
+
+  submitBtn1.addEventListener('click', submitForm1);

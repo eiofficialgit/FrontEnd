@@ -94,4 +94,67 @@ public class MainController {
 		return "account-statement";
 	}
 
+	@RequestMapping("/adminsetting")
+	public String adminsetting(Model model) {
+		model.addAttribute("title", "Admin Setting - Sky Exchange");
+		model.addAttribute("js", "adminsetting.js");
+		return "admin-setting";
+	}
+
+	@RequestMapping("/websitesetting")
+	public String websitesetting(Model model) {
+		model.addAttribute("title", "Website Setting - Sky Exchange");
+		model.addAttribute("js", "websitesetting.js");
+		return "website-setting";
+	}
+
+	@RequestMapping("/addwebsite")
+	public String addwebsite(Model model) {
+		model.addAttribute("title", "Add Website - Sky Exchange");
+		model.addAttribute("js", "addwebsite.js");
+		return "addwebsite-setting";
+	}
+
+	@RequestMapping("/searchuser")
+	public String searchuser(Model model) {
+		model.addAttribute("title", "Search User - Sky Exchange");
+		model.addAttribute("js", "searchuser.js");
+		return "search-user";
+	}
+
+	@RequestMapping("/surveillance") 
+	public String surveillance(Model model) {
+		model.addAttribute("title", "Surveillance - Sky Exchange");
+		model.addAttribute("js", "surveillance.js");
+		return "surveillance";
+	}
+
+	@RequestMapping("/userImpMessage") 
+	public String userImpMessage(Model model) {
+		model.addAttribute("title", "User Imp Message - Sky Exchange");
+		model.addAttribute("js", "userimpmessage.js");
+		return "userImp-Message";
+	}
+
+	@RequestMapping("/uplineImpMessage") 
+	public String uplineImpMessage(Model model) {
+		model.addAttribute("title", "Upline Imp Message - Sky Exchange");
+		model.addAttribute("js", "uplineimpmessage.js");
+		return "uplineImp-Message";
+	}
+
+	@RequestMapping("/hyperMessage") 
+	public String hyperMessage(Model model) {
+		model.addAttribute("title", "Hyper Message - Sky Exchange");
+		model.addAttribute("js", "hypermessage.js");
+		return "hyper-Message";
+	}
+
+	@RequestMapping("/userMessage") 
+	public String userMessage(Model model) {
+		model.addAttribute("title", "User Message - Sky Exchange");
+		model.addAttribute("js", "usermessage.js");
+		return "user-Message";
+	}
+
 }

@@ -48,7 +48,7 @@ async function pageFind() {
 }
 
 async function showActivityLog(currentPage, itemsPerPage){
-    const response = await fetch(`http://3.0.102.63:7074/exuser/activityLog?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+    const response = await fetch(`http://localhost:7074/exuser/activityLog?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const activityData = await response.json();
   const encryptedData=activityData.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function setOwnerData() {
-  const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
+  const response = await fetch("http://localhost:7074/exuser/loginUser");
   const result = await response.json();
   const decryptData=JSON.parse(decryptMessage(result.data));
   console.log(decryptData);

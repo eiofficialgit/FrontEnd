@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="full-wrap p-2" style="height: calc(100% - 105px)">
+        <h2>Search Users</h2>
+        <div class="d-flex align-content-center mt-2 mb-3">
+            <div>
+                <input type="text" placeholder="Enter userID..." style="width: 250px;" id="userSearchVal">
+            </div>
+            <div class="ms-2">
+                <button class="websiteAdd" id="userSearch">Search</button>
+            </div>
+            <div class="ms-2">
+                <button class="websiteAdd">Statement</button>
+            </div>
+        </div>
+
+        <table class="table01" style="overflow-y: scroll;">
+            <thead style="height: 30px;">
+                <tr>
+                    <th width="10%" class="align-L">
+                        Admin
+                    </th>
+                    <th width="15%" class="align-L">Super Admin
+                    </th>
+                    <th width="15%">Sub Admin
+                    </th>
+                    <th width="15%">Senior Super
+                    </th>
+                    <th width="15%">Super Agent
+                    </th>
+                    <th width="15%">Agent
+                    </th>
+                    <th width="15%">User
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="content">
+                <tr>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

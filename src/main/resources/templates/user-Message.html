@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="main_wrap">
+        <div class="row adminsettmain p-2 pt-3">
+            <div class="col-md-12 align-items-start">
+                <p><strong>Set Message For Users</strong></p>
+                <div class="d-flex mt-2 mb-2">
+                    <input type="text" placeholder="Enter Title" style="width: 257px; height: 29px;">
+                    <input type="date" style="width: 218px; height: 28px;">
+                </div>
+               <textarea style="width: 400px; height: 102px; margin: 0;" placeholder="Enter Your Message"></textarea>
+               <br>
+                <button class="saveMessage mt-2">Save Message</button>
+            </div>
+        </div>
+        <div class="d-flex align-items-center mt-3">
+            <p class="me-2"><strong>Message List :</strong></p>
+            <select name="" id="" style="width: 128px; height: 30px;" class="me-2">
+                <option value="" disabled selected>Select Action</option>
+                <option value="">Lock Message</option>
+                <option value="">Open Message</option>
+                <option value="">Delete Message</option>
+            </select>
+            <button class="saveMessage">Action</button>
+        </div>
+        <div class="row mt-3" style="width: 100%;">
+            <div class="col-md-12">
+                <table class="table01" style="overflow-y: scroll;">
+                    <thead style="height: 30px;">
+                        <tr>
+                            <th width="5%" class="align-L">
+                                S.No.
+                            </th>
+                            <th width="20%" class="align-L">Msg_ID
+                            </th>
+                            <th width="20%">Msg_Title
+                            </th>
+                            <th width="20%">Msg_Date
+                            </th>
+                            <th width="20%">IsLock
+                            </th>
+                            <th width="40%">Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="content">
+                        <tr>
+                            <td>1</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td><button class="saveMessage">Edit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

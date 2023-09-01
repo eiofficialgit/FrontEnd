@@ -24,33 +24,20 @@ window.onclick = function (event) {
   }
 }
 
-var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
-var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
-
-function encryptMessage(data) {
-  return CryptoJS.AES.encrypt(data, parsedBase64Key, {
-    mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7
-  }).toString();
-}
-
-function decryptMessage(data) {
-  return CryptoJS.AES.decrypt(data, parsedBase64Key, {
-    mode: CryptoJS.mode.ECB,
-    padding: CryptoJS.pad.Pkcs7
-  }).toString(CryptoJS.enc.Utf8);
-}
-
-var balanceData = 0;
-function setData() {
-  let data = JSON.parse(sessionStorage?.getItem("data"));
+async function setOwnerData() {
+  const response = await fetch("http://localhost:7074/exuser/loginUser");
+  const result = await response.json();
+  const data=JSON.parse(decryptMessage(result.data));
   if (data) {
     let statusofuser = document.getElementById("statusofuser");
     let statusofUSER = document.getElementById("statusofUSER");
-    let balance = document.getElementById("mastersBalance2");
-    let mastersAvailBal = document.getElementById("mastersAvailBal");
-    balanceData = data.myBalance;
-    balance.innerText = balanceData;
+    document.getElementById("mastersBalance2").innerText=data.myBalance;
+    if(data.usertype === 0){
+      document.getElementById("websiteField").style.display="block";
+    }
+    else if(data.usertype > 0){
+      document.getElementById("websiteField").style.display="none";
+    }
     if (data.usertype == 0 && statusofuser) {
       statusofuser.innerHTML = "Subadmin";
       statusofUSER.innerHTML = "Subadmin";
@@ -77,6 +64,7 @@ function setData() {
     }
   }
 }
+setOwnerData();
 
 function saveUser() {
   const website = document.getElementById("websites").value;
@@ -96,14 +84,14 @@ function saveUser() {
   else {
     repeatPasswordErrorText.innerText = "";
     const data = {
-      "websitename": `${website}`,
+      "websiteName": `${website}`,
       "userid": `${userName}`,
       "email": `${email}`,
       "password": `${password}`,
+      "userName": `${firstName}`,
       "firstName": `${firstName}`,
       "lastName": `${lastName}`,
       "mobileNumber": `${mobileNumber}`,
-      "exposureLimit": 2000,
       "timeZone": `${timeZone}`
     };
     var encryptData = encryptMessage(JSON.stringify(data));
@@ -114,7 +102,7 @@ function saveUser() {
 
 async function saveUserInMongo(payload) {
   try {
-    const response = await fetch("http://3.0.102.63:7074/exuser/validateUserCreation", {
+    const response = await fetch("http://localhost:7074/exuser/validateUserCreation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -150,6 +138,9 @@ async function saveUserInMongo(payload) {
       else if (result.message === "User Id Must be Required") {
         userNameErrorText.innerHTML = "User Id Must be Required !";
       }
+      else if (result.message === "User Id Exist!!!") {
+        userNameErrorText.innerHTML = "User Id already Exist !";
+      }
       else if (result.message === "Password Must contains 1 Upper Case, 1 Lower Case & 1 Numeric Value & in Between 8-15 Charachter") {
         passwordErrorText.innerHTML = "Password Must contains 1 Upper Case, 1 Lower Case & 1 Numeric Value & in Between 8-15 Charachter !";
       }
@@ -169,7 +160,7 @@ async function saveUserInMongo(payload) {
 }
 
 async function getAllWebsites() {
-  const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
+  const response = await fetch("http://localhost:7074/exuser/allWebsite");
   const websites = await response.json();
   const encryptedData = websites.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -237,7 +228,7 @@ async function pageFind() {
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-  const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+  const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
   const childs = await response.json();
   const encryptedData = childs.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -304,7 +295,7 @@ function showAllChild(data) {
   totalExposureField.innerHTML = totalExposureData;
   totalAvailBal.innerHTML = totalAvailableBalanceData;
   totalBalance.innerHTML = totalExposureData + totalAvailableBalanceData;
-  availableBalanceData = balanceData;
+  //availableBalanceData = balanceData;
   availableBalance.innerHTML = availableBalanceData;
 }
 
@@ -334,8 +325,15 @@ async function setPageListeners() {
   });
 };
 
+async function getUserIdAndUserType(){
+  const response = await fetch("http://localhost:7074/exuser/loginUser");
+  const result = await response.json();
+  const data=JSON.parse(decryptMessage(result.data));
+  return data;
+}
+
 async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
-  let data = JSON.parse(sessionStorage?.getItem("data"));
+    let data=await getUserIdAndUserType();
     if(data){
         let id=data.id;
         let usertype = data.usertype+1;
@@ -345,7 +343,6 @@ async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  setData();
   showAllWebsites();
   const nextBtn = document.getElementById('next-btn');
   const prevBtn = document.getElementById('prev-btn');
@@ -406,7 +403,7 @@ async function showPopup(currentBalance, userid) {
       var encryptData = encryptMessage(JSON.stringify(data));
       const payload = { "payload": encryptData };
       try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+        const response = await fetch("http://localhost:7074/exuser/creditReference", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -467,12 +464,14 @@ searchBtn.addEventListener('click',async function () {
 });
 
 async function searchUser(currentPage, itemsPerPage, userId) {
-  const response = await fetch(`http://3.0.102.63:7074/exuser/search?pageNumber=${currentPage}&pageSize=${itemsPerPage}&keywords=${userId}`);
+  let data=await getUserIdAndUserType();
+  let id=data.id;
+  let usertype=parseInt(data.usertype)+1;
+  const response = await fetch(`http://localhost:7074/exuser/search/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}&userid=${userId}`);
   const result = await response.json();
   const encryptedData = result.data;
   var decryptData = JSON.parse(decryptMessage(encryptedData));
   var stage = JSON.parse(decryptData.payload);
-  console.log(stage.content);
   showAllChild(stage.content);
   totalPages = stage.totalPages;
 }

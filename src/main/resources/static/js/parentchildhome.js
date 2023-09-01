@@ -25,41 +25,6 @@ window.onclick = function (event) {
 }
 
 var balanceData = 0;
-function setData() {
-    let data = JSON.parse(sessionStorage?.getItem("data"));
-    if (data) {
-        let statusofuser = document.getElementById("statusofuser");
-        let statusofUSER = document.getElementById("statusofUSER");
-        let balance = document.getElementById("mastersBalance2");
-        let mastersAvailBal = document.getElementById("mastersAvailBal");
-        balanceData = data.myBalance;
-        balance.innerText = balanceData;
-        if (data.usertype == 0 && statusofuser) {
-            statusofuser.innerHTML = "Subadmin";
-            statusofUSER.innerHTML = "Subadmin";
-        }
-        else if (data.usertype === 1 && statusofuser) {
-            statusofuser.innerHTML = "Miniadmin";
-            statusofUSER.innerHTML = "Miniadmin";
-        }
-        else if (data.usertype === 2 && statusofuser) {
-            statusofuser.innerHTML = "Supersuper";
-            statusofUSER.innerHTML = "Supersuper";
-        }
-        else if (data.usertype === 3 && statusofuser) {
-            statusofuser.innerHTML = "Supermaster";
-            statusofUSER.innerHTML = "Supermaster";
-        }
-        else if (data.usertype === 4 && statusofuser) {
-            statusofuser.innerHTML = "Master";
-            statusofUSER.innerHTML = "Master";
-        }
-        else if (data.usertype === 5 && statusofuser) {
-            statusofuser.innerHTML = "user";
-            statusofUSER.innerHTML = "user";
-        }
-    }
-}
 
 function saveUser() {
     const website = document.getElementById("websites").value;
@@ -97,7 +62,7 @@ function saveUser() {
 
 async function saveUserInMongo(payload) {
     try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/validateUserCreation", {
+        const response = await fetch("http://localhost:7074/exuser/validateUserCreation", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -152,25 +117,6 @@ async function saveUserInMongo(payload) {
     }
 }
 
-async function getAllWebsites() {
-    const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
-    const websites = await response.json();
-    const encryptedData = websites.data;
-    var decryptData = JSON.parse(decryptMessage(encryptedData));
-    var stage = JSON.parse(decryptData.payload);
-    var data = JSON.parse(stage.data);
-    return data;
-}
-
-async function showAllWebsites() {
-    let allWebsites = await getAllWebsites();
-    for (let i = 0; i < allWebsites.length; i++) {
-        let website = allWebsites[i];
-        let websites = document.getElementById("websites");
-        websites.innerHTML += `<option value="${website.name}">${website.name}</option>`;
-    }
-}
-
 var currentPage = 0;
 var itemsPerPage = 7;
 var totalPages = 0;
@@ -221,7 +167,7 @@ async function pageFind() {
 }
 
 async function getAllChild(id, usertype, currentPage, itemsPerPage) {
-    const response = await fetch(`http://3.0.102.63:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
+    const response = await fetch(`http://localhost:7074/exuser/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}`);
     const childs = await response.json();
     const encryptedData = childs.data;
     var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -326,6 +272,7 @@ async function getAllChildAndSetListeners(id, usertype, currentPage, itemsPerPag
 const userLinksArray = [];
 
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("websiteField").style.display="none";
     const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
     const firstpageBtn = document.getElementById('firstpage-btn');
@@ -355,14 +302,34 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         pageButtons.innerHTML = currentPage + 1;
     }
-    setData();
-    showAllWebsites();
     const href = window.location.href;
     var pattern = /\/home\/([^\/]+)\/([^\/]+)/;
     var matches = href.match(pattern);
     if (matches) {
         var id = matches[1];
         var usertype = parseInt(matches[2]);
+        let statusofuser = document.getElementById("statusofuser");
+        let statusofUSER = document.getElementById("statusofUSER");
+        if (usertype === 2 && statusofuser) {
+            statusofuser.innerHTML = "Miniadmin";
+            statusofUSER.innerHTML = "Miniadmin";
+        }
+        else if (usertype === 3 && statusofuser) {
+            statusofuser.innerHTML = "Supersuper";
+            statusofUSER.innerHTML = "Supersuper";
+        }
+        else if (usertype === 4 && statusofuser) {
+            statusofuser.innerHTML = "Supermaster";
+            statusofUSER.innerHTML = "Supermaster";
+        }
+        else if (usertype === 5 && statusofuser) {
+            statusofuser.innerHTML = "Master";
+            statusofUSER.innerHTML = "Master";
+        }
+        else if (usertype === 6 && statusofuser) {
+            statusofuser.innerHTML = "user";
+            statusofUSER.innerHTML = "user";
+        }
         switch (usertype) {
             case 2:
                 userTypeButtons = [
@@ -456,7 +423,7 @@ async function showPopup(currentBalance, userid) {
             var encryptData = encryptMessage(JSON.stringify(data));
             const payload = { "payload": encryptData };
             try {
-                const response = await fetch("http://3.0.102.63:7074/exuser/creditReference", {
+                const response = await fetch("http://localhost:7074/exuser/creditReference", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
