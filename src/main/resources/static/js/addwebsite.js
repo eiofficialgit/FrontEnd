@@ -1,5 +1,5 @@
 async function getAllWebsites(){
- const response = await fetch("http://localhost:7074/exuser/allWebsite");
+ const response = await fetch("http://3.0.102.63:7074/exuser/allWebsite");
   const websites = await response.json();
  const encryptedData = websites.data;
  var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -34,7 +34,7 @@ async function getAllWebsites(){
       const encryptData=encryptMessage(JSON.stringify(data));
       const payload={"payload": encryptData};
       try {
-          const response = await fetch("http://localhost:7074/exuser/addWebsite", {
+          const response = await fetch("http://3.0.102.63:7074/exuser/addWebsite", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

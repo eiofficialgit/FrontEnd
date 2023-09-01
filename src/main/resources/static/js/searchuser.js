@@ -1,7 +1,7 @@
 var currentPage = 0;
 var itemsPerPage = 10;
 async function searchUser(id, usertype, currentPage, itemsPerPage, userId) {
-    const response = await fetch(`http://localhost:7074/exuser/search/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}&userid=${userId}`);
+    const response = await fetch(`http://3.0.102.63:7074/exuser/search/${id}/${usertype}?pageNumber=${currentPage}&pageSize=${itemsPerPage}&userid=${userId}`);
     const result = await response.json();
     const encryptedData = result.data;
     var decryptData = JSON.parse(decryptMessage(encryptedData));
@@ -33,7 +33,7 @@ async function searchUser(id, usertype, currentPage, itemsPerPage, userId) {
       alert("Please enter ur user name!");
     }
     else{
-      const response = await fetch("http://localhost:7074/exuser/loginUser");
+      const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
       const result = await response.json();
       const data=JSON.parse(decryptMessage(result.data));
       let id=data.id;

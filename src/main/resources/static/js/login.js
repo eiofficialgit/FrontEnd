@@ -95,7 +95,7 @@ if(username !== "" && username !== "null" && password !== "" && password !== "nu
 
 async function fetchLogin(payload) {
 try {
-  const response = await fetch("http://localhost:7074/exuser/managementHome", {
+  const response = await fetch("http://3.0.102.63:7074/exuser/managementHome", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
