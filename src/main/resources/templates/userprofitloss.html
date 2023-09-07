@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="main_wrap">
+        <!-- agent path -->
+        <div class="agent_path">
+            <ul id="agentPath" class="agent_path-L">
+                <li id="path3" class="last_li">
+                    <a href="javascript: void(0);">
+                        <span class="lv_3" id="profileSub">
+                        </span>
+                        <strong id="profileOwner"></strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Agent Left Column -->
+        <div class="col-left">
+            <!-- Sub Menu and Path -->
+            <div class="sub_path">
+                <!-- Sub Menu -->
+                <ul class="menu-list">
+                    <li class="class">Position</li>
+                    <li class="li-hover p-1" id="accountsummary" style="cursor: pointer;">Account Summary</li>
+                    </li>
+                    <li class="class">Account Details</li>
+                    <li class="li-hover p-1" id="bettinghistory" style="cursor: pointer;">Betting History</li>
+                    <li class="li-hover select p-1" id="bettingprofitloss" style="cursor: pointer;">Betting Profit & Loss</li>
+                    <li class="li-hover p-1" id="transactionhistory" style="cursor: pointer;">Transaction History</li>
+                    <li class="li-hover p-1" id="activitylog" style="cursor: pointer;">Activity Log</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Center Column -->
+        <div class="col-center report">
+          <div class="white-wrap" style="    display: block;">
+            <h3>Betting Profit &amp; Loss - Main wallet</h3>
+
+            <ul class="acc-info">
+                <li class="user"><i class="fas fa-user"></i>manish3936</li>
+                <li class="time"><i class="far fa-alarm-clock"></i>2021-09-20 12:01</li>
+            </ul>
+            <!-- Tab -->
+            <ul class="report-tab-wrap" style="display:block">
+                <li class="report-tab  select" id="reportType_exchange" data-reporttabtype="0">
+                    Exchange
+                </li>
+                <li class="report-tab " id="reportType_fancyBet" data-reporttabtype="7">
+                    FancyBet
+                </li>
+                <li class="report-tab " id="reportType_casino" data-reporttabtype="1">
+                    Casino
+                </li>
+                <li class="report-tab " id="reportType_sportsBook" data-reporttabtype="2">
+                    Sportsbook
+                </li>
+                <li class="report-tab " id="reportType_bookMaker" data-reporttabtype="3">
+                    BookMaker
+                </li>
+                <li class="report-tab " id="reportType_bPoker" data-reporttabtype="4">
+                    BPoker
+                </li>
+                <li class="report-tab " id="reportType_binary" data-reporttabtype="5">
+                    Binary
+                </li>
+                <li class="report-tab " id="reportType_sabaSportsBook" data-reporttabtype="6">
+                    SABA
+                </li>
+                <li class="report-tab " id="reportType_mt5" data-reporttabtype="8">
+                    MT5
+                </li>
+            </ul>
+            <!-- function -->
+            <div class="function-wrap">
+                <ul class="input-list">
+                    <div id="statusCondition" style="display: none">
+                        <li><label>Bet Status:</label></li>
+                        <li>
+                            <select name="betStatus" id="betStatus">
+                            </select>
+                        </li>
+                    </div>
+                    <li><label>Period</label></li>
+                    <li>
+                        <input id="startDate" class="cal-input" type="date" placeholder="YYYY-MM-DD">
+                        <input id="startTime" disabled="" class="time-input disable" type="text" placeholder="09:00" maxlength="5">
+                        to
+                        <input id="endDate" class="cal-input" type="date" placeholder="YYYY-MM-DD">
+                        <input id="endTime" disabled="" class="time-input disable" type="text" placeholder="08:59" maxlength="5">
+                    </li>
+                    <li style="display: none;">(TimeZone:IST)</li>
+                </ul>
+                <ul class="input-list d-flex align-items-center">
+                    <li><a id="today" href="#" class="btn">Just For Today</a></li>
+                    <li><a id="yesterday" href="#" class="btn">From Yesterday</a></li>
+                    <li style="display: none;"><a id="last7days" href="#" class="btn">Last 7 days</a></li>
+                    <li style="display: none;"><a id="last30days" href="#" class="btn">Last 30 days</a></li>
+                    <li style="display: none;"><a id="last2months" href="#" class="btn">Last 2 Months</a></li>
+                    <li style="display: none;"><a id="last3months" href="#" class="btn">Last 3 Months</a></li>
+                    <li><a id="getPL" href="#" class="btn-send">Get P &amp; L</a></li>
+                </ul>
+            </div>
+            <!-- No Report Message -->
+            <div id="noReportMessage">
+                <p>Betting Profit &amp; Loss enables you to review the bets you have placed. <br>Specify the time period during which your bets were placed, the type of markets on which the bets were placed, and the sport.</p>
+                <p>Betting Profit &amp; Loss is available online for the past 30 days.</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h6><strong>Total P/L: PBU (0.00)</strong></h6>
+            </div>
+            <div>
+                <select name="" id="">
+                    <option value="">ALL</option>
+                    <option value="">SOCCER</option>
+                    <option value="">TENNIS</option>
+                    <option value="">CRICKET</option>
+                </select>
+                <label for=""><strong>PBU (0.00)</strong></label>
+            </div>
+        </div>
+        <table class="table01" style="overflow-y: scroll;">
+            <thead style="height: 30px;">
+                <tr>
+                    <th width="30%">Market
+                    </th>
+                    <th width="30%">Settled date	
+                    </th>
+                    <th width="40%">Profit/Loss
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="content" style="text-align: left;">
+                <tr>
+                    <td colspan=9>You have no bets in this time period.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Profit and Loss is shown net of commission.</p>
+        <div id="paginationList" class="d-flex justify-content-center align-content-center">
+            <ul class="pagination">
+              <li class="page-item">
+                <span class="page-link disabled" id="firstpage-btn">First</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="prev-btn">Previous</span>
+              </li>
+              <li class="page-item" >
+                <span class="page-link" style="background-color: #ffc107;" id="page-btn">1</span>
+              </li>
+              <li class="page-item" id="next-btn">
+                <span class="page-link">Next</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="lastpage-btn">Last</span>
+              </li>
+            </ul>
+            <div class="d-flex ms-2">
+              <input type="number" style="width: 70px; height: 29px;" id="page-search">
+              <button style="width: 50px; height: 29px; border-radius: 7px; border: none; margin-left: 5px; background-color: #ffc107; box-shadow: 1px 1px black;" onclick="pageFind()">Go</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="overlayBanking" id="overlayBankingPage"></div>
+         <div id="popup" class="popup">
+          <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+            <h2>Change Password</h2>
+            <span class="close" id="closeBtn">&times;</span>
+          </div>
+          <div class="p-1 ps-5 pe-5 pt-2 pb-1">
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <label for="field1"><small>New Password</small></label>
+          <input type="password" id="field1" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field2"><small>Confirm New Password</small></label>
+          <input type="password" id="field2" placeholder="Enter" style="width: 100%;"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field3"><small>Your Password</small></label>
+          <input type="password" id="field3" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          </div>
+          <div class="text-center border border-top p-2">
+            <button id="submitBtn">Submit</button>
+          </div>
+        </div>
+</body>
+</html>

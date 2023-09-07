@@ -1,4 +1,51 @@
-var currentPage = 0;
+function getUserid(){
+    const currentUrl = window.location.pathname;
+    const userid=currentUrl.split("/")[2];
+    return userid;
+  }
+  
+  function getBaseUrl(){
+    const currentUrl = window.location.href;
+  const urlObject = new URL(currentUrl);
+  return urlObject.origin;
+  }
+  
+  document.getElementById("accountsummary").addEventListener("click", function(){
+    const userid=getUserid();
+    const baseurl=getBaseUrl();
+    const updatedUrl=baseurl+"/userprofile/"+userid;
+    window.location.href = updatedUrl;
+  });
+  
+  document.getElementById("bettinghistory").addEventListener("click", function(){
+    const userid=getUserid();
+    const baseurl=getBaseUrl();
+    const updatedUrl=baseurl+"/userbettinghistory/"+userid;
+    window.location.href = updatedUrl;
+  });
+  
+  document.getElementById("bettingprofitloss").addEventListener("click", function(){
+    const userid=getUserid();
+    const baseurl=getBaseUrl();
+    const updatedUrl=baseurl+"/userprofitloss/"+userid;
+    window.location.href = updatedUrl;
+  });
+  
+  document.getElementById("transactionhistory").addEventListener("click", function(){
+    const userid=getUserid();
+    const baseurl=getBaseUrl();
+    const updatedUrl=baseurl+"/useraccountstatement/"+userid;
+    window.location.href = updatedUrl;
+  });
+  
+  document.getElementById("activitylog").addEventListener("click", function(){
+    const userid=getUserid();
+    const baseurl=getBaseUrl();
+    const updatedUrl=baseurl+"/useractivitylog/"+userid;
+    window.location.href = updatedUrl;
+  });
+
+  var currentPage = 0;
 var itemsPerPage = 10;
 var totalPages = 0;
 var pageButtons = document.getElementById('page-btn');
@@ -47,15 +94,12 @@ async function pageFind() {
   await getAllTransactoionLog(currentPage, itemsPerPage);
 }
 
-var userid;
-
 async function setOwnerData() {
   try {
     const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
   const result = await response.json();
   const decryptData=JSON.parse(decryptMessage(result.data));
   document.getElementById("accountStatementOwner").innerText = decryptData.userid;
-  userid=decryptData.userid;
   var sub=document.getElementById("accountSub");
   if(decryptData.usertype === 0){
       sub.innerText="O";
@@ -84,10 +128,9 @@ async function setOwnerData() {
 }
 
 async function showAccountStatement(currentPage, itemsPerPage){
-  if(!userid){
+    const userid=getUserid();
     const data={"userid": userid};
     console.log(data);
-  }
   const payload={"payload": encryptMessage(JSON.stringify(data))};
   try {
     const response = await fetch(`http://3.0.102.63:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`, {

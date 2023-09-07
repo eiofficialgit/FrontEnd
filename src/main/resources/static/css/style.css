@@ -1762,6 +1762,11 @@ select {
     border: 1px solid #BEDCA7;
     color: #508D0E;
 }
+.status-lock{
+    background-color: #708b9d42;
+    border: 1px solid #708b9db0;
+    color: #708B9D;
+}
 .status-active, .status-suspend, .status-lock {
     font-size: 11px;
     font-weight: bold;
@@ -1801,14 +1806,6 @@ select {
     border-bottom-width: 0;
     padding-right: 25px;
     background-position: 100% -2982px;
-}
-.status-active img{
-    background-image: url(../img/agent-sa842cb1158.png);
-    background-repeat: no-repeat;
-    margin-right: 5px;
-    background-position: -50px -1303px;
-    height: 8px;
-    width: 8px;
 }
 /* The Modal (background) */
 .ebcf_modal {
@@ -2414,3 +2411,152 @@ thead {
     font-size: 12px;
     padding: 2px;
   }
+
+  .log-header{
+    width: 100%;
+    background-color: #1b2d38;
+    color: #fff;
+    line-height: 22px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  #useridFieldLog{
+    background-color: #fff;
+    color: #243a48;
+    padding: 1px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    margin-top: 7px !important;
+  }
+  .logclose{
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    border-left: 1px solid #5F6C74;
+    cursor: pointer;
+  }
+  .setting-active {
+    background-color: #508D0E;
+    color: #E5F1DC;
+  }
+  .setting-suspend {
+    background-color: #D0021B;
+    color: #F2E2E6;
+  }
+  .setting-locked {
+    background-color: #708b9d;
+    color: #F2E2E6;
+  }
+  .report-tab-wrap {
+    position: relative;
+    margin-top: 16px;
+    list-style-type: none;
+}
+
+.report-tab-wrap .report-tab {
+    display: inline-block;
+    padding: 5px 24px 9px;
+    margin-right: 2px;
+    background-color: #FFFFFF;
+    border: 1px solid #3B5160;
+    border-radius: 3px 3px 0 0;
+    color: #3B5160;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.report-tab-wrap .report-tab.select {
+    background-color: #3B5160;
+    color: #FFFFFF;
+}
+
+.report-tab-wrap .report-tab.select:before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #3B5160;
+}
+
+.report-tab-wrap .report-tab {
+    display: inline-block;
+    padding: 3px 22px 5px;
+    margin-right: 2px;
+    background-color: #FFFFFF;
+    border: 1px solid #3B5160;
+    border-radius: 3px 3px 0 0;
+    color: #3B5160;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.white-wrap {
+    background-color: #fff;
+    color: #3b5160;
+    padding: 7px 10px 5px;
+    border-bottom: 1px solid #7e97a7;
+    margin-bottom: 15px;
+    display: flex;
+    padding-bottom: 0;
+}
+
+.white-wrap .over-bal {
+    width: 400px;
+}
+
+.white-wrap .h-p {
+    margin-left: 13px;
+}
+
+.white-wrap h3 {
+    width: 85%;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.white-wrap p {
+    width: 85%;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+.white-wrap .function-wrap {
+    border-bottom-color: #E0E6E6;
+    margin-bottom: 0;
+}
+.acc-info {
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.acc-info .user {
+    background-position: -12px -205px;
+    margin-right: 30px;
+    font-size: 12px;
+}
+
+.acc-info .user i.fas.fa-user {
+    font-size: 11px;
+    color: #b1b1b1;
+    padding-right: 6px;
+}
+
+.acc-info .time {
+    background-position: -12px -190px;
+    font-size: 12px;
+}
+
+.acc-info .time i.far.fa-alarm-clock {
+    font-size: 11px;
+    color: #fdfdfd;
+    /* padding-right: 6px; */
+    background: #b1b1b1;
+    padding: 3px 2px 2px 2px;
+    margin-right: 6px;
+    border-radius: 3px;
+}

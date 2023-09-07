@@ -157,4 +157,62 @@ public class MainController {
 		return "user-Message";
 	}
 
+	@RequestMapping("/creditReferenceLog/{userid}") 
+	public String log(Model model, @PathVariable String userid) {
+		if(userid != null){
+			return "log";
+		}
+		return "home";
+	}
+
+	@RequestMapping("/userprofile/{userid}")
+	public String userprofile(Model model, @PathVariable String userid) {
+		if(userid != null){
+			model.addAttribute("title", "Profile - Sky Exchange");
+			model.addAttribute("js", "userprofile.js");
+			return "userprofile";
+		}
+		return "home";
+	}
+
+	@RequestMapping("/useractivitylog/{userid}")
+	public String useractivitylog(Model model, @PathVariable String userid) {
+		if(userid != null){
+			model.addAttribute("title", "Activity Log - Sky Exchange");
+			model.addAttribute("js", "useractivitylog.js");
+			return "useractivity-log";
+		}
+		return "home";
+	}
+
+	@RequestMapping("/useraccountstatement/{userid}")
+	public String useraccountstatement(Model model, @PathVariable String userid) {
+		if(userid != null){
+			model.addAttribute("title", "Account Statement - Sky Exchange");
+			model.addAttribute("js", "useraccountstatement.js");
+			return "useraccount-statement";
+		}
+		return "home";
+	}
+
+	@RequestMapping("/userbettinghistory/{userid}")
+	public String userbettinghistory(Model model, @PathVariable String userid) {
+		if(userid != null){
+			model.addAttribute("title", "Betting History - Sky Exchange");
+			model.addAttribute("js", "userbettinghistory.js");
+			return "userbettinghistory";
+		}
+		return "home";
+	}
+
+	@RequestMapping("/userprofitloss/{userid}")
+	public String userprofitloss(Model model, @PathVariable String userid) {
+		if(userid != null){
+			model.addAttribute("title", "Profit Loss - Sky Exchange");
+			model.addAttribute("js", "userprofitloss.js");
+			return "userprofitloss";
+		}
+		return "home";
+	}
+
 }

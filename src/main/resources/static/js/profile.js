@@ -62,7 +62,6 @@ async function setOwnerData() {
   const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
   const result = await response.json();
   const decryptData=JSON.parse(decryptMessage(result.data));
-  console.log(decryptData);
   document.getElementById("profileOwner").innerText = decryptData.userid;
   var sub=document.getElementById("profileSub");
   if(decryptData.usertype === 0){

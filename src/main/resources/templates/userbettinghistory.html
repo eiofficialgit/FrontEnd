@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="main_wrap">
+        <!-- agent path -->
+        <div class="agent_path">
+            <ul id="agentPath" class="agent_path-L">
+                <li id="path3" class="last_li">
+                    <a href="javascript: void(0);">
+                        <span class="lv_3" id="profileSub">
+                        </span>
+                        <strong id="profileOwner"></strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Agent Left Column -->
+        <div class="col-left">
+            <!-- Sub Menu and Path -->
+            <div class="sub_path">
+                <!-- Sub Menu -->
+                <ul class="menu-list">
+                    <li class="class">Position</li>
+                    <li class="li-hover p-1" id="accountsummary" style="cursor: pointer;">Account Summary</li>
+                    </li>
+                    <li class="class">Account Details</li>
+                    <li class="li-hover select p-1" id="bettinghistory" style="cursor: pointer;">Betting History</li>
+                    <li class="li-hover p-1" id="bettingprofitloss" style="cursor: pointer;">Betting Profit & Loss</li>
+                    <li class="li-hover p-1" id="transactionhistory" style="cursor: pointer;">Transaction History</li>
+                    <li class="li-hover p-1" id="activitylog" style="cursor: pointer;">Activity Log</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Center Column -->
+        <div class="col-center report">
+          <div class="white-wrap" style="display: block;">
+            <h3>Betting History</h3>
+            <!-- Tab -->
+            <ul class="report-tab-wrap" style="display:block">
+                <li class="report-tab  select" id="reportType_exchange" data-reporttabtype="0">
+                    Exchange
+                </li>
+                <li class="report-tab " id="reportType_fancyBet" data-reporttabtype="7">
+                    FancyBet
+                </li>
+                <li class="report-tab " id="reportType_casino" data-reporttabtype="1">
+                    Casino
+                </li>
+                <li class="report-tab " id="reportType_sportsBook" data-reporttabtype="2">
+                    Sportsbook
+                </li>
+                <li class="report-tab " id="reportType_bookMaker" data-reporttabtype="3">
+                    BookMaker
+                </li>
+                <li class="report-tab " id="reportType_bPoker" data-reporttabtype="4">
+                    BPoker
+                </li>
+                <li class="report-tab " id="reportType_binary" data-reporttabtype="5">
+                    Binary
+                </li>
+                <li class="report-tab " id="reportType_sabaSportsBook" data-reporttabtype="6">
+                    SABA
+                </li>
+                <li class="report-tab " id="reportType_mt5" data-reporttabtype="8">
+                    MT5
+                </li>
+            </ul>
+            <!-- function -->
+            <div class="function-wrap">
+                <ul class="input-list">
+                    <div id="statusCondition" class="d-flex">
+                        <li><label>Bet Status:</label></li>
+                        <li>
+                            <select name="betStatus" id="betStatus">
+                              <option value="">Settled</option>
+                              <option value="">Cancelled</option>
+                              <option value="">Voided</option>
+                            </select>
+                        </li>
+                    </div>
+                    <li><label>Period</label></li>
+                    <li>
+                        <input id="startDate" class="cal-input" type="date" placeholder="YYYY-MM-DD">
+                        <input id="startTime" disabled="" class="time-input disable" type="text" placeholder="09:00" maxlength="5">
+                        to
+                        <input id="endDate" class="cal-input" type="date" placeholder="YYYY-MM-DD">
+                        <input id="endTime" disabled="" class="time-input disable" type="text" placeholder="08:59" maxlength="5">
+                    </li>
+                    <li style="display: none;">(TimeZone:IST)</li>
+                </ul>
+                <ul class="input-list d-flex align-items-center">
+                    <li><a id="today" href="#" class="btn">Just For Today</a></li>
+                    <li><a id="yesterday" href="#" class="btn">From Yesterday</a></li>
+                    <li style="display: none;"><a id="last7days" href="#" class="btn">Last 7 days</a></li>
+                    <li style="display: none;"><a id="last30days" href="#" class="btn">Last 30 days</a></li>
+                    <li style="display: none;"><a id="last2months" href="#" class="btn">Last 2 Months</a></li>
+                    <li style="display: none;"><a id="last3months" href="#" class="btn">Last 3 Months</a></li>
+                    <li><a id="getPL" href="#" class="btn-send">Get History</a></li>
+                </ul>
+            </div>
+            <!-- No Report Message -->
+            <div id="noReportMessage">
+                <p>Betting Profit &amp; Loss enables you to review the bets you have placed. <br>Specify the time period during which your bets were placed, the type of markets on which the bets were placed, and the sport.</p>
+                <p>Betting Profit &amp; Loss is available online for the past 30 days.</p>
+            </div>
+        </div>
+        <table class="table01" style="overflow-y: scroll;">
+            <thead style="height: 30px;">
+                <tr>
+                    <th width="10%" class="align-L">
+                        Bet ID
+                    </th>
+                    <th width="10%" class="align-L">PL ID
+                    </th>
+                    <th width="10%">Market
+                    </th>
+                    <th width="10%">Selection
+                    </th>
+                    <th width="10%">Type
+                    </th>
+                    <th width="10%">Bet placed
+                    </th>
+                    <th width="10%">Stake
+                    </th>
+                    <th width="10%">Avg. odds matched	
+                    </th>
+                    <th width="10%">Profit/Loss
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="content" style="text-align: left;">
+                <tr>
+                    <td colspan=9>You have no bets in this time period.</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="paginationList" class="d-flex justify-content-center align-content-center">
+            <ul class="pagination">
+              <li class="page-item">
+                <span class="page-link disabled" id="firstpage-btn">First</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="prev-btn">Previous</span>
+              </li>
+              <li class="page-item" >
+                <span class="page-link" style="background-color: #ffc107;" id="page-btn">1</span>
+              </li>
+              <li class="page-item" id="next-btn">
+                <span class="page-link">Next</span>
+              </li>
+              <li class="page-item">
+                <span class="page-link disabled" id="lastpage-btn">Last</span>
+              </li>
+            </ul>
+            <div class="d-flex ms-2">
+              <input type="number" style="width: 70px; height: 29px;" id="page-search">
+              <button style="width: 50px; height: 29px; border-radius: 7px; border: none; margin-left: 5px; background-color: #ffc107; box-shadow: 1px 1px black;" onclick="pageFind()">Go</button>
+            </div>
+          </div>
+        </div>
+</body>
+</html>

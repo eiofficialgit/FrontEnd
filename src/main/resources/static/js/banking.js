@@ -151,7 +151,7 @@ async function setPageListeners() {
       const logButton = row.querySelector("#log");
       
       logButton.addEventListener("click", function () {
-        window.location.href = "/accountstatement";
+        window.location.href = `/userprofile/${userid}`;
       });
   
       editCreditBtn.addEventListener("click", function () {
@@ -241,6 +241,15 @@ async function showPopup(currentBalance, userid) {
   const field2 = document.getElementById("field2");
   const submitBtn = document.getElementById("submitBtn");
   const closeBtn = document.getElementById("closeBtn");
+
+  const logbutton = document.getElementById("logbutton");
+
+    logbutton.addEventListener("click", function () {
+      const currentUrl = window.location.pathname;
+      const baseUrl=currentUrl.split("/")[0]+"/creditReferenceLog";
+      const updatedUrl = `${baseUrl}/${userid}`;
+      window.open(updatedUrl, "mywindow","menubar=1,resizable=1,width='50%',height='80vh'");
+    });
 
   currentBalanceSpan.innerHTML = currentBalance;
   field1.value = "";

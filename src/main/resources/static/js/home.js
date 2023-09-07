@@ -24,6 +24,23 @@ window.onclick = function (event) {
   }
 }
 
+var encryptedBase64Key = "bXVzdGJlMTZieXRlc2tleQ==";
+        var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
+
+        function encryptMessage (data){
+        return CryptoJS.AES.encrypt(data, parsedBase64Key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+        }).toString();
+        }
+
+        function decryptMessage (data){
+        return CryptoJS.AES.decrypt( data, parsedBase64Key, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+        } ).toString( CryptoJS.enc.Utf8 );
+        }
+
 async function setOwnerData() {
   const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
   const result = await response.json();
@@ -276,16 +293,16 @@ function showAllChild(data) {
       </td>
       <td id="actionCol" class="actionCol">
         <ul class="action">
-          <li>
+          <li id="userprofitloss" style="cursor: pointer;">
             <a id="p_l1" class="p_l"><span><i class="fas fa-long-arrow-up"></i><i class="fas fa-long-arrow-down"></i></span></a>
           </li>
-          <li>
+          <li id="userbettinghistory" style="cursor: pointer;">
             <a id="betting_history1" class="betting_history"><span><i class="fas fa-line-height"></i></span></a>
           </li>
           <li>
-            <a class="status"><span><i class="fas fa-cog"></i></span></a>
+            <button style="border:none;" id="settingPopup" class="status"><span><i class="fas fa-cog"></i></span></button>
           </li>
-          <li>
+          <li id="userprofile" style="cursor: pointer;">
             <a class="profile"><span><i class="fas fa-user-alt"></i></span></a>
           </li>
         </ul>
@@ -305,12 +322,42 @@ async function setPageListeners() {
     const useridElement = row.querySelector("#userDataLink");
     const userid = useridElement.textContent;
     const editCreditBtn = row.querySelector("#creditRefBtn");
+    const settingBtn = row.querySelector("#settingPopup");
+    const profileBtn = row.querySelector("#userprofile");
+    const profitLossBtn = row.querySelector("#userprofitloss");
+    const bettingHistoryBtn = row.querySelector("#userbettinghistory");
     const currentBalance = parseFloat(row.querySelector("#creditRefBtn").textContent);
 
     editCreditBtn.addEventListener("click", function () {
       showPopup(currentBalance, userid);
     });
+
+    settingBtn.addEventListener("click", function () {
+      showSettingPopup(userid);
+    });
+
+    profileBtn.addEventListener("click", function () {
+      const currentUrl = window.location.pathname;
+      const baseUrl=currentUrl.split("/")[0]+"/userprofile";
+      const updatedUrl = `${baseUrl}/${userid}`;
+      window.location.href = updatedUrl;
+    });
+
+    profitLossBtn.addEventListener("click", function () {
+      const currentUrl = window.location.pathname;
+      const baseUrl=currentUrl.split("/")[0]+"/userprofitloss";
+      const updatedUrl = `${baseUrl}/${userid}`;
+      window.location.href = updatedUrl;
+    });
+
+    bettingHistoryBtn.addEventListener("click", function () {
+      const currentUrl = window.location.pathname;
+      const baseUrl=currentUrl.split("/")[0]+"/userbettinghistory";
+      const updatedUrl = `${baseUrl}/${userid}`;
+      window.location.href = updatedUrl;
+    });
   });
+
   const userLinks = document.querySelectorAll(".user-link");
   userLinks.forEach((userLink) => {
     userLink.addEventListener("click", async function (event) {
@@ -376,13 +423,101 @@ document.addEventListener("DOMContentLoaded", function () {
   getAllChildAndSetListeners(currentPage, itemsPerPage);
 });
 
-async function showPopup(currentBalance, userid) {
+async function showSettingPopup(userid){
+  const popup = document.getElementById("settingpopup");
+  const settPasField = document.getElementById("settPasField");
+  const settUserid = document.getElementById("settUserid");
+  const submitBtn = document.getElementById("settSubmitBtn");
+  const closeBtn = document.getElementById("settCloseBtn");
+  const activeBtn = document.getElementById("activeBtn");
+  const suspendBtn = document.getElementById("suspendBtn");
+  const LockedBtn = document.getElementById("LockedBtn");
+
+  activeBtn.addEventListener("click", function () {
+      activeBtn.classList.add("setting-active");
+      suspendBtn.classList.remove("setting-suspend");
+      LockedBtn.classList.remove("setting-locked");
+  });
+
+  suspendBtn.addEventListener("click", function () {
+      suspendBtn.classList.add("setting-suspend");
+      activeBtn.classList.remove("setting-active");
+      LockedBtn.classList.remove("setting-locked");
+  });
+
+  LockedBtn.addEventListener("click", function () {
+      LockedBtn.classList.add("setting-locked");
+      activeBtn.classList.remove("setting-active");
+      suspendBtn.classList.remove("setting-suspend");
+  });
+
+  settUserid.innerHTML =userid;
+
+  popup.style.display = "block";
+  showOverlay();
+
+  submitBtn.addEventListener("click", async function () {
+    const password = settPasField.value;
+    if (password !== "") {
+      const data = {
+        "userid": userid,
+        "password": password
+      };
+      var encryptData = encryptMessage(JSON.stringify(data));
+      const payload = { "payload": encryptData };
+      try {
+        const response = await fetch("http://3.0.102.63:7074/exuser/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (result.status === "success") {
+          popup.style.display = "none";
+          hideOverlay();
+          alert(result.message);
+          location.reload();
+        }
+        else {
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else if (password === "") {
+      alert("Please enter your password!");
+    }
+  });
+
+  closeBtn.addEventListener("click", function () {
+    popup.style.display = "none";
+    hideOverlay();
+  });
+
+  window.addEventListener("click", function (event) {
+    if (event.target === popup) {
+      popup.style.display = "none";
+    }
+  });
+}
+
+async function showPopup(currentBalance, userid, onPopupDisplay) {
   const popup = document.getElementById("popup");
   const currentBalanceSpan = document.getElementById("currentBalance");
   const field1 = document.getElementById("field1");
   const field2 = document.getElementById("field2");
   const submitBtn = document.getElementById("submitBtn");
   const closeBtn = document.getElementById("closeBtn");
+  const logbutton = document.getElementById("logbutton");
+
+    logbutton.addEventListener("click", function () {
+      const currentUrl = window.location.pathname;
+      const baseUrl=currentUrl.split("/")[0]+"/creditReferenceLog";
+      const updatedUrl = `${baseUrl}/${userid}`;
+      window.open(updatedUrl, "mywindow","menubar=1,resizable=1,width='50%',height='80vh'");
+    });
 
   currentBalanceSpan.innerHTML = currentBalance;
   field1.value = "";
@@ -441,6 +576,9 @@ async function showPopup(currentBalance, userid) {
       popup.style.display = "none";
     }
   });
+  if (typeof onPopupDisplay === "function") {
+    onPopupDisplay();
+  }
 }
 
 function showOverlay() {
@@ -457,11 +595,20 @@ const searchBtn = document.getElementById('searchUserId');
 searchBtn.addEventListener('click',async function () {
   const userId = document.getElementById('userId').value.toLowerCase();
   if (userId.trim() !== "") {
-    searchUser(currentPage, itemsPerPage, userId.trim());
+   searchUser(currentPage, itemsPerPage, userId.trim(), function () {
+  showPopup(currentBalance, userId);
+});
   } else {
     alert("Please enter a valid User ID !");
   }
 });
+
+function showImpMessage() {
+  var em=JSON.parse(sessionStorage.getItem("impmessage"));
+  var dm=decryptMessage(em);
+  alert(dm);
+};
+showImpMessage();
 
 async function searchUser(currentPage, itemsPerPage, userId) {
   let data=await getUserIdAndUserType();

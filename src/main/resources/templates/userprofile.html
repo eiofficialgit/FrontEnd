@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="main_wrap">
+        <!-- agent path -->
+        <div class="agent_path">
+            <ul id="agentPath" class="agent_path-L">
+                <li id="path3" class="last_li">
+                    <a href="javascript: void(0);">
+                        <span class="lv_3" id="profileSub">
+                        </span>
+                        <strong id="profileOwner"></strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Agent Left Column -->
+        <div class="col-left">
+            <!-- Sub Menu and Path -->
+            <div class="sub_path">
+                <!-- Sub Menu -->
+                <ul class="menu-list">
+                    <li class="class">Position</li>
+                    <li class="li-hover select p-1" id="accountsummary" style="cursor: pointer;">Account Summary</li>
+                    </li>
+                    <li class="class">Account Details</li>
+                    <li class="li-hover p-1" id="bettinghistory" style="cursor: pointer;">Betting History</li>
+                    <li class="li-hover p-1" id="bettingprofitloss" style="cursor: pointer;">Betting Profit & Loss</li>
+                    <li class="li-hover p-1" id="transactionhistory" style="cursor: pointer;">Transaction History</li>
+                    <li class="li-hover p-1" id="activitylog" style="cursor: pointer;">Activity Log</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Center Column -->
+        <div class="col-center report">
+            <h2>Account Summary</h2>
+            <span><small><i class="fas fa-user-alt me-2"></i><span>subadmin1</span></small></span>
+            <table class="table01 mt-2" style="overflow-y: scroll;">
+                <thead style="height: 30px;">
+                    <tr>
+                        <th width="0%" class="align-L">
+                            Wallet
+                        </th>
+                        <th width="25%" class="align-L">Available to Bet	
+                        </th>
+                        <th width="30%">Funds available to withdraw
+                        </th>
+                        <th width="30%">Current exposure
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="content">
+                    <tr>
+                        <td>Main wallet</td>
+                        <td>--</td>
+                        <td>--</td>
+                        <td>--</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>Profile</h2>
+            <div class="profile-flex">
+                <div class="event-left">
+                    <div class="profile-wrap">
+                        <h3>About You</h3>
+                        <dl>
+                            <dt>First Name</dt>
+                            <dd id="fname"></dd>
+                        </dl>
+                        <dl>
+                            <dt>Last Name</dt>
+                            <dd id="lname"></dd>
+                        </dl>
+                        <dl>
+                            <dt>Birthday</dt>
+                            <dd>--</dd>
+                        </dl>
+                        <dl>
+                            <dt>E-mail</dt>
+                            <dd id="email"></dd>
+                        </dl>
+                        <dl>
+                            <dt>Password</dt>
+                            <dd>********************************
+                                <span style="cursor: pointer; color: blue;" class="favor-set" id="openBtn">Edit
+                                    <i class="fas fa-pen"></i>
+                                </span>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>Time Zone</dt>
+                            <dd id="ist"></dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="event-right">
+                    <div class="profile-wrap">
+                        <h3>Contact Details</h3>
+                        <dl>
+                            <dt>Primary number</dt>
+                            <dd id="number"></dd>
+                        </dl>
+                    </div>
+                    <div class="profile-wrap" style="display: none;">
+                        <h3>PT</h3>
+                        <dl>
+                            <dt>My PT Allowed</dt>
+                            <dd>0%</dd>
+                        </dl>
+                        <dl>
+                            <dt>My Fancy Bet PT</dt>
+                            <dd>0%</dd>
+                        </dl>
+                        <dl>
+                            <dt>Sportsbook PT</dt>
+                            <dd>0%</dd>
+                        </dl>
+                        <dl>
+                            <dt>Sportsbook Premium PT</dt>
+                            <dd>0%</dd>
+                        </dl>
+                        <dl>
+                            <dt>My Book Maker PT</dt>
+                            <dd>0%</dd>
+                        </dl>
+                        <dl>
+                            <dt>Casino PT Allowed</dt>
+                            <dd>LIVE: 0%, RNG: 0%, SLOT: 0%, VIRTUAL: 0%</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlayBanking" id="overlayBankingPage"></div>
+         <div id="popup" class="popup">
+          <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+            <h2>Change Password</h2>
+            <span class="close" id="closeBtn">&times;</span>
+          </div>
+          <div class="p-1 ps-5 pe-5 pt-2 pb-1">
+          <div class="d-flex justify-content-between align-items-center pt-2">
+            <label for="field1"><small>New Password</small></label>
+          <input type="password" id="field1" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field2"><small>Confirm New Password</small></label>
+          <input type="password" id="field2" placeholder="Enter" style="width: 100%;"/>
+          <span class="text-danger">*</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="field3"><small>Your Password</small></label>
+          <input type="password" id="field3" placeholder="Enter"/>
+          <span class="text-danger">*</span>
+          </div>
+          </div>
+          <div class="text-center border border-top p-2">
+            <button id="submitBtn">Submit</button>
+          </div>
+        </div>
+</body>
+</html>

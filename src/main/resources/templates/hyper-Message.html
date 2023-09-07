@@ -9,12 +9,12 @@
             <div class="col-md-12 align-items-start">
                 <p><strong>Set Message For Upline Users</strong></p>
                 <div class="d-flex mt-2 mb-2">
-                    <input type="text" placeholder="Enter Title" style="width: 257px; height: 29px;">
-                    <input type="date" style="width: 218px; height: 28px;">
+                    <input type="text" placeholder="Enter Title" style="width: 257px; height: 29px;" id="titleField">
+                    <input type="date" style="width: 218px; height: 28px;" id="dateField">
                 </div>
-               <textarea style="width: 400px; height: 102px; margin: 0;" placeholder="Enter Your Message"></textarea>
+               <textarea style="width: 400px; height: 102px; margin: 0;" placeholder="Enter Your Message" id="messageField"></textarea>
                <br>
-                <button class="saveMessage mt-2">Save Message</button>
+                <button class="saveMessage mt-2" id="saveHypMessage">Save Message</button>
             </div>
         </div>
         <div class="d-flex align-items-center mt-3">
@@ -48,14 +48,6 @@
                         </tr>
                     </thead>
                     <tbody id="content">
-                        <tr>
-                            <td>1</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td>--</td>
-                            <td><button class="saveMessage">Edit</button></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
