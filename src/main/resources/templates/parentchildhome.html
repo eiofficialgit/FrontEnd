@@ -344,7 +344,7 @@
        <div class="p-1 ps-5 pe-5 pt-2 pb-1">
          <div class="d-flex justify-content-between align-items-center">
            <p>current : <span id="currentBalance"></span></p>
-           <button class="logbutton">Log</button>
+           <button class="logbutton" id="logbutton">Log</button>
          </div>
        <div class="d-flex justify-content-between align-items-center pt-2">
          <label for="field1">New</label>
@@ -359,6 +359,29 @@
          <button id="submitBtn">Submit</button>
        </div>
      </div>
+
+     <div id="settingpopup" class="popup">
+      <div class="d-flex justify-content-between align-items-center p-1 ps-3 pe-3 border border-bottom">
+        <h2>Change Status</h2>
+        <span class="close" id="settCloseBtn">&times;</span>
+      </div>
+      <div class="p-1 ps-5 pe-5 pt-2 pb-1">
+        <div class="d-flex justify-content-between align-items-center">
+         <div class="d-flex align-content-center"><span class="lv_4 text-center" style="background:#568BC8; padding:1px;">DIR</span> <p id="settUserid">userid</p></div>
+          <p style="color: #508D0E;"><strong>*Active</strong></p>
+        </div>
+      <div class="d-flex justify-content-evenly align-items-center">
+        <button class="status-active p-2" id="activeBtn"><img style="width: 30px; height: 30px;" src="https://cdn-icons-png.flaticon.com/128/6785/6785304.png" alt=""><p>Active</p></button>
+        <button class="status-suspend p-2" id="suspendBtn"><img style="width: 30px; height: 30px;" src="https://cdn-icons-png.flaticon.com/128/2576/2576686.png" alt=""><p>Suspend</p></button>
+        <button class="status-lock p-2" id="LockedBtn"><img style="width: 30px; height: 30px;" src="https://cdn-icons-png.flaticon.com/128/10464/10464776.png" alt=""><p>Locked</p></button>
+      </div>
+      </div>
+      <div class="d-flex align-content-center border border-top p-2">
+        <label class="mt-1" for="">Password</label>
+        <input class="ms-3" type="password" id="settPasField" placeholder="Enter"/>
+        <button style="height: 30px;" id="settSubmitBtn" class="websiteAdd ms-2">Change</button>
+      </div>
+    </div>
     
     <div class="footer_info">
       <div class="main_wrap">

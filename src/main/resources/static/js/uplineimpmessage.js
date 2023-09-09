@@ -21,9 +21,10 @@ document.getElementById("saveImpMessage").addEventListener("click", async functi
       alert("Please enter ur imp message !");
     }
     else{
-      const encryptmessage=encryptMessage(messageValue);
-      const payload={"payload": encryptmessage};
-      sessionStorage.setItem("impmessage", JSON.stringify(encryptmessage));
+      const message={"payload": messageValue};
+      const encryptMessageData=encryptMessage(JSON.stringify(message));
+      const payload={"payload": encryptMessageData};
+      
       try {
           const response = await fetch("http://3.0.102.63:7074/exuser/importantMessage", {
             method: "POST",
@@ -46,9 +47,12 @@ document.getElementById("saveImpMessage").addEventListener("click", async functi
     }
   });
 
-function showImpMessage() {
-    var em=JSON.parse(sessionStorage.getItem("impmessage"));
-    var dm=decryptMessage(em);
-    document.getElementById("impMessage").innerText=dm;
+async function showImpMessage() {
+  const response = await fetch("http://3.0.102.63:7074/exuser/currentImportantMessage");
+  const result = await response.json();
+  const data=JSON.parse(decryptMessage(result.data));
+  const payload=JSON.parse(data.payload);
+  const decryptData=JSON.parse(payload.data);
+  document.getElementById("impMessage").innerText=decryptData.message;
 }
 showImpMessage();

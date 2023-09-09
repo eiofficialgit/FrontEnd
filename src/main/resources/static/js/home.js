@@ -83,6 +83,22 @@ async function setOwnerData() {
 }
 setOwnerData();
 
+async function setHyperMessage(){
+  const response = await fetch(`http://3.0.102.63:7074/exuser/allHyperMessage`);
+  const result = await response.json();
+  const encryptedData = result.data;
+  var decryptData = JSON.parse(decryptMessage(encryptedData));
+  var stage = JSON.parse(decryptData.payload);
+  var data=JSON.parse(stage.data);
+  let content = document.getElementById("hyperContent");
+            content.innerHTML="";
+                for (let i = 0; i < data.length; i++) {
+                let child = data[i];
+                content.innerHTML+=`<a><span>${child.date}</span>${child.message}</a>`;
+                }
+}
+setHyperMessage();
+
 function saveUser() {
   const website = document.getElementById("websites").value;
   const userName = document.getElementById("userName").value;
@@ -287,8 +303,20 @@ function showAllChild(data) {
       <td id="available1" style="display: table-cell">165.40</td>
       <td id="refPL1">${(child.myBalance + child.exposureLimit) - child.fixLimit}</td>
       <td id="statusCol">
-        <span id="status1" class="status-active" >
-          <img src="img/transparent.gif" />Active
+        <span id="status1" class="${
+          child.isActive
+            ? "status-active"
+            : child.accountLock && child.betLock
+              ? "status-suspend"
+              : "status-lock"
+        }">
+        ${
+          child.isActive
+            ? "Active"
+            : child.accountLock && child.betLock
+              ? "Suspend"
+              : "Lock"
+        }
         </span>
       </td>
       <td id="actionCol" class="actionCol">
@@ -327,13 +355,13 @@ async function setPageListeners() {
     const profitLossBtn = row.querySelector("#userprofitloss");
     const bettingHistoryBtn = row.querySelector("#userbettinghistory");
     const currentBalance = parseFloat(row.querySelector("#creditRefBtn").textContent);
-
+    const statusOfUser = row.querySelector("#status1").textContent.trim();
     editCreditBtn.addEventListener("click", function () {
       showPopup(currentBalance, userid);
     });
 
     settingBtn.addEventListener("click", function () {
-      showSettingPopup(userid);
+      showSettingPopup(userid, statusOfUser);
     });
 
     profileBtn.addEventListener("click", function () {
@@ -423,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
   getAllChildAndSetListeners(currentPage, itemsPerPage);
 });
 
-async function showSettingPopup(userid){
+async function showSettingPopup(userid, statusOfUser){
   const popup = document.getElementById("settingpopup");
   const settPasField = document.getElementById("settPasField");
   const settUserid = document.getElementById("settUserid");
@@ -432,20 +460,56 @@ async function showSettingPopup(userid){
   const activeBtn = document.getElementById("activeBtn");
   const suspendBtn = document.getElementById("suspendBtn");
   const LockedBtn = document.getElementById("LockedBtn");
+  const status=statusOfUser;
+  let action = ""
+  if (status === "Active") {
+    activeBtn.disabled = true;
+    activeBtn.style.opacity=0.2;
+    suspendBtn.disabled = false;
+    suspendBtn.style.opacity=1;
+    LockedBtn.disabled = false;
+    LockedBtn.style.opacity=1;
+    activeBtn.classList.remove("setting-active");
+    suspendBtn.classList.remove("setting-suspend");
+    LockedBtn.classList.remove("setting-locked");
+  } else if (status === "Suspend") {
+    suspendBtn.disabled = true;
+    suspendBtn.style.opacity=0.2;
+    activeBtn.disabled = false;
+    activeBtn.style.opacity=1;
+    LockedBtn.disabled = false;
+    LockedBtn.style.opacity=1;
+    activeBtn.classList.remove("setting-active");
+    suspendBtn.classList.remove("setting-suspend");
+    LockedBtn.classList.remove("setting-locked");
+  } else if (status === "Lock") {
+    LockedBtn.disabled = true;
+    LockedBtn.style.opacity=0.2;
+    activeBtn.disabled = false;
+    activeBtn.style.opacity=1;
+    suspendBtn.disabled = false;
+    suspendBtn.style.opacity=1;
+    activeBtn.classList.remove("setting-active");
+    suspendBtn.classList.remove("setting-suspend");
+    LockedBtn.classList.remove("setting-locked");
+  }
 
   activeBtn.addEventListener("click", function () {
+      action = "active";
       activeBtn.classList.add("setting-active");
       suspendBtn.classList.remove("setting-suspend");
       LockedBtn.classList.remove("setting-locked");
   });
 
   suspendBtn.addEventListener("click", function () {
+      action = "suspend";
       suspendBtn.classList.add("setting-suspend");
       activeBtn.classList.remove("setting-active");
       LockedBtn.classList.remove("setting-locked");
   });
 
   LockedBtn.addEventListener("click", function () {
+      action = "lock";
       LockedBtn.classList.add("setting-locked");
       activeBtn.classList.remove("setting-active");
       suspendBtn.classList.remove("setting-suspend");
@@ -463,10 +527,11 @@ async function showSettingPopup(userid){
         "userid": userid,
         "password": password
       };
+      console.log(data);
       var encryptData = encryptMessage(JSON.stringify(data));
       const payload = { "payload": encryptData };
       try {
-        const response = await fetch("http://3.0.102.63:7074/exuser/", {
+        const response = await fetch(`http://3.0.102.63:7074/exuser/action/${action}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -603,10 +668,13 @@ searchBtn.addEventListener('click',async function () {
   }
 });
 
-function showImpMessage() {
-  var em=JSON.parse(sessionStorage.getItem("impmessage"));
-  var dm=decryptMessage(em);
-  alert(dm);
+async function showImpMessage() {
+  const response = await fetch("http://3.0.102.63:7074/exuser/currentImportantMessage");
+  const result = await response.json();
+  const data=JSON.parse(decryptMessage(result.data));
+  const payload=JSON.parse(data.payload);
+  const decryptData=JSON.parse(payload.data);
+  alert(decryptData.message);
 };
 showImpMessage();
 

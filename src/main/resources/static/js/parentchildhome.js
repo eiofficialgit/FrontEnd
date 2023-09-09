@@ -209,25 +209,25 @@ function showAllChild(data) {
           <td id="available1" style="display: table-cell">165.40</td>
           <td id="refPL1">${(child.myBalance + child.exposureLimit) - child.fixLimit}</td>
           <td id="statusCol">
-            <span id="status1" class="status-active" >
-              <img src="img/transparent.gif" />Active
+            <span id="status1" class="${child.isActive ? "status-active" : "status-suspend"}">
+            ${child.isActive ? "Active" : "Lock"}
             </span>
           </td>
           <td id="actionCol" class="actionCol">
-            <ul class="action">
-              <li>
-                <a id="p_l1" class="p_l"><span><i class="fas fa-long-arrow-up"></i><i class="fas fa-long-arrow-down"></i></span></a>
-              </li>
-              <li>
-                <a id="betting_history1" class="betting_history"><span><i class="fas fa-line-height"></i></span></a>
-              </li>
-              <li>
-                <a class="status"><span><i class="fas fa-cog"></i></span></a>
-              </li>
-              <li>
-                <a class="profile"><span><i class="fas fa-user-alt"></i></span></a>
-              </li>
-            </ul>
+          <ul class="action">
+          <li id="userprofitloss" style="cursor: pointer;">
+            <a id="p_l1" class="p_l"><span><i class="fas fa-long-arrow-up"></i><i class="fas fa-long-arrow-down"></i></span></a>
+          </li>
+          <li id="userbettinghistory" style="cursor: pointer;">
+            <a id="betting_history1" class="betting_history"><span><i class="fas fa-line-height"></i></span></a>
+          </li>
+          <li>
+            <button style="border:none;" id="settingPopup" class="status"><span><i class="fas fa-cog"></i></span></button>
+          </li>
+          <li id="userprofile" style="cursor: pointer;">
+            <a class="profile"><span><i class="fas fa-user-alt"></i></span></a>
+          </li>
+        </ul>
           </td>
         </tr>`;
     }
@@ -244,11 +244,39 @@ async function setPageListeners() {
         const useridElement = row.querySelector("#userDataLink");
         const userid = useridElement.textContent;
         const editCreditBtn = row.querySelector("#creditRefBtn");
+        const settingBtn = row.querySelector("#settingPopup");
+        const profileBtn = row.querySelector("#userprofile");
+        const profitLossBtn = row.querySelector("#userprofitloss");
+        const bettingHistoryBtn = row.querySelector("#userbettinghistory");
         const currentBalance = parseFloat(row.querySelector("#creditRefBtn").textContent);
 
         editCreditBtn.addEventListener("click", function () {
             showPopup(currentBalance, userid);
         });
+        settingBtn.addEventListener("click", function () {
+            showSettingPopup(userid);
+          });
+      
+          profileBtn.addEventListener("click", function () {
+            const currentUrl = window.location.pathname;
+            const baseUrl=currentUrl.split("/")[0]+"/userprofile";
+            const updatedUrl = `${baseUrl}/${userid}`;
+            window.location.href = updatedUrl;
+          });
+      
+          profitLossBtn.addEventListener("click", function () {
+            const currentUrl = window.location.pathname;
+            const baseUrl=currentUrl.split("/")[0]+"/userprofitloss";
+            const updatedUrl = `${baseUrl}/${userid}`;
+            window.location.href = updatedUrl;
+          });
+      
+          bettingHistoryBtn.addEventListener("click", function () {
+            const currentUrl = window.location.pathname;
+            const baseUrl=currentUrl.split("/")[0]+"/userbettinghistory";
+            const updatedUrl = `${baseUrl}/${userid}`;
+            window.location.href = updatedUrl;
+          });
     });
     const userLinks = document.querySelectorAll(".user-link");
     userLinks.forEach((userLink) => {
@@ -396,6 +424,90 @@ function appendUserTypeButtons(buttonsArray) {
     });
 }
 
+async function showSettingPopup(userid){
+    const popup = document.getElementById("settingpopup");
+    const settPasField = document.getElementById("settPasField");
+    const settUserid = document.getElementById("settUserid");
+    const submitBtn = document.getElementById("settSubmitBtn");
+    const closeBtn = document.getElementById("settCloseBtn");
+    const activeBtn = document.getElementById("activeBtn");
+    const suspendBtn = document.getElementById("suspendBtn");
+    const LockedBtn = document.getElementById("LockedBtn");
+    let action = ""
+    activeBtn.addEventListener("click", function () {
+        action = "active";
+        activeBtn.classList.add("setting-active");
+        suspendBtn.classList.remove("setting-suspend");
+        LockedBtn.classList.remove("setting-locked");
+    });
+  
+    suspendBtn.addEventListener("click", function () {
+        action = "suspend";
+        suspendBtn.classList.add("setting-suspend");
+        activeBtn.classList.remove("setting-active");
+        LockedBtn.classList.remove("setting-locked");
+    });
+  
+    LockedBtn.addEventListener("click", function () {
+        action = "suspend";
+        LockedBtn.classList.add("setting-locked");
+        activeBtn.classList.remove("setting-active");
+        suspendBtn.classList.remove("setting-suspend");
+    });
+  
+    settUserid.innerHTML =userid;
+  
+    popup.style.display = "block";
+    showOverlay();
+  
+    submitBtn.addEventListener("click", async function () {
+      const password = settPasField.value;
+      if (password !== "") {
+        const data = {
+          "userid": userid,
+          "password": password
+        };
+        console.log(data);
+        var encryptData = encryptMessage(JSON.stringify(data));
+        const payload = { "payload": encryptData };
+        try {
+          const response = await fetch(`http://3.0.102.63:7074/exuser/action/${action}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+          const result = await response.json();
+          if (result.status === "success") {
+            popup.style.display = "none";
+            hideOverlay();
+            alert(result.message);
+            location.reload();
+          }
+          else {
+            alert(result.message);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      } else if (password === "") {
+        alert("Please enter your password!");
+      }
+    });
+  
+    closeBtn.addEventListener("click", function () {
+      popup.style.display = "none";
+      hideOverlay();
+    });
+  
+    window.addEventListener("click", function (event) {
+      if (event.target === popup) {
+        popup.style.display = "none";
+      }
+    });
+  }
+
 async function showPopup(currentBalance, userid) {
     const popup = document.getElementById("popup");
     const currentBalanceSpan = document.getElementById("currentBalance");
@@ -403,6 +515,14 @@ async function showPopup(currentBalance, userid) {
     const field2 = document.getElementById("field2");
     const submitBtn = document.getElementById("submitBtn");
     const closeBtn = document.getElementById("closeBtn");
+    const logbutton = document.getElementById("logbutton");
+
+    logbutton.addEventListener("click", function () {
+        const currentUrl = window.location.pathname;
+        const baseUrl=currentUrl.split("/")[0]+"/creditReferenceLog";
+        const updatedUrl = `${baseUrl}/${userid}`;
+        window.open(updatedUrl, "mywindow","menubar=1,resizable=1,width='50%',height='80vh'");
+      });
 
     currentBalanceSpan.innerHTML = currentBalance;
     field1.value = "";

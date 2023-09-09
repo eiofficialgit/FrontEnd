@@ -110,9 +110,10 @@ try {
     passwordp.innerHTML = "* Invalid Password !";
   }
   else if(result.status === "success"){
-	const decryptData=JSON.parse(decryptMessage(result.data));
-    sessionStorage.setItem("data",JSON.stringify(decryptData));
     window.location.href = "/home";
+  }
+  else if(result.status === "Error"){
+    alert(result.message);
   }
 } catch (error) {
   console.error("Error:", error);
