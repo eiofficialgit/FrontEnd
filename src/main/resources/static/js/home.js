@@ -461,8 +461,10 @@ async function showSettingPopup(userid, statusOfUser){
   const suspendBtn = document.getElementById("suspendBtn");
   const LockedBtn = document.getElementById("LockedBtn");
   const status=statusOfUser;
-  let action = ""
+  const currentStatus=document.getElementById("currentStatus");
   if (status === "Active") {
+    currentStatus.innerText=status;
+    currentStatus.style.color="green";
     activeBtn.disabled = true;
     activeBtn.style.opacity=0.2;
     suspendBtn.disabled = false;
@@ -473,6 +475,8 @@ async function showSettingPopup(userid, statusOfUser){
     suspendBtn.classList.remove("setting-suspend");
     LockedBtn.classList.remove("setting-locked");
   } else if (status === "Suspend") {
+    currentStatus.innerText=status;
+    currentStatus.style.color="red";
     suspendBtn.disabled = true;
     suspendBtn.style.opacity=0.2;
     activeBtn.disabled = false;
@@ -483,6 +487,8 @@ async function showSettingPopup(userid, statusOfUser){
     suspendBtn.classList.remove("setting-suspend");
     LockedBtn.classList.remove("setting-locked");
   } else if (status === "Lock") {
+    currentStatus.innerText=status;
+    currentStatus.style.color="grey";
     LockedBtn.disabled = true;
     LockedBtn.style.opacity=0.2;
     activeBtn.disabled = false;

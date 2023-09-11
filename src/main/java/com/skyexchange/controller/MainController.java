@@ -215,4 +215,11 @@ public class MainController {
 		return "home";
 	}
 
+	@RequestMapping("/addmatch") 
+	public String addMatch(Model model) {
+		model.addAttribute("title", "Add Match - Sky Exchange");
+		model.addAttribute("js", "addmatch.js");
+		return "addmatch";
+	}
+
 }

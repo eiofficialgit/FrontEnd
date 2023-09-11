@@ -209,10 +209,22 @@ function showAllChild(data) {
           <td id="available1" style="display: table-cell">165.40</td>
           <td id="refPL1">${(child.myBalance + child.exposureLimit) - child.fixLimit}</td>
           <td id="statusCol">
-            <span id="status1" class="${child.isActive ? "status-active" : "status-suspend"}">
-            ${child.isActive ? "Active" : "Lock"}
-            </span>
-          </td>
+                <span id="status1" class="${
+                child.isActive
+                    ? "status-active"
+                    : child.accountLock && child.betLock
+                    ? "status-suspend"
+                    : "status-lock"
+                }">
+                ${
+                child.isActive
+                    ? "Active"
+                    : child.accountLock && child.betLock
+                    ? "Suspend"
+                    : "Lock"
+                }
+                </span>
+            </td>
           <td id="actionCol" class="actionCol">
           <ul class="action">
           <li id="userprofitloss" style="cursor: pointer;">
@@ -249,12 +261,13 @@ async function setPageListeners() {
         const profitLossBtn = row.querySelector("#userprofitloss");
         const bettingHistoryBtn = row.querySelector("#userbettinghistory");
         const currentBalance = parseFloat(row.querySelector("#creditRefBtn").textContent);
+        const statusOfUser = row.querySelector("#status1").textContent.trim();
 
         editCreditBtn.addEventListener("click", function () {
             showPopup(currentBalance, userid);
         });
         settingBtn.addEventListener("click", function () {
-            showSettingPopup(userid);
+            showSettingPopup(userid, statusOfUser);
           });
       
           profileBtn.addEventListener("click", function () {
@@ -424,7 +437,7 @@ function appendUserTypeButtons(buttonsArray) {
     });
 }
 
-async function showSettingPopup(userid){
+async function showSettingPopup(userid, statusOfUser){
     const popup = document.getElementById("settingpopup");
     const settPasField = document.getElementById("settPasField");
     const settUserid = document.getElementById("settUserid");
@@ -433,7 +446,46 @@ async function showSettingPopup(userid){
     const activeBtn = document.getElementById("activeBtn");
     const suspendBtn = document.getElementById("suspendBtn");
     const LockedBtn = document.getElementById("LockedBtn");
-    let action = ""
+    const status=statusOfUser;
+    const currentStatus=document.getElementById("currentStatus");
+    if (status === "Active") {
+      currentStatus.innerText=status;
+      currentStatus.style.color="green";
+      activeBtn.disabled = true;
+      activeBtn.style.opacity=0.2;
+      suspendBtn.disabled = false;
+      suspendBtn.style.opacity=1;
+      LockedBtn.disabled = false;
+      LockedBtn.style.opacity=1;
+      activeBtn.classList.remove("setting-active");
+      suspendBtn.classList.remove("setting-suspend");
+      LockedBtn.classList.remove("setting-locked");
+    } else if (status === "Suspend") {
+      currentStatus.innerText=status;
+      currentStatus.style.color="red";
+      suspendBtn.disabled = true;
+      suspendBtn.style.opacity=0.2;
+      activeBtn.disabled = false;
+      activeBtn.style.opacity=1;
+      LockedBtn.disabled = false;
+      LockedBtn.style.opacity=1;
+      activeBtn.classList.remove("setting-active");
+      suspendBtn.classList.remove("setting-suspend");
+      LockedBtn.classList.remove("setting-locked");
+    } else if (status === "Lock") {
+      currentStatus.innerText=status;
+      currentStatus.style.color="grey";
+      LockedBtn.disabled = true;
+      LockedBtn.style.opacity=0.2;
+      activeBtn.disabled = false;
+      activeBtn.style.opacity=1;
+      suspendBtn.disabled = false;
+      suspendBtn.style.opacity=1;
+      activeBtn.classList.remove("setting-active");
+      suspendBtn.classList.remove("setting-suspend");
+      LockedBtn.classList.remove("setting-locked");
+    }
+  
     activeBtn.addEventListener("click", function () {
         action = "active";
         activeBtn.classList.add("setting-active");
@@ -449,7 +501,7 @@ async function showSettingPopup(userid){
     });
   
     LockedBtn.addEventListener("click", function () {
-        action = "suspend";
+        action = "lock";
         LockedBtn.classList.add("setting-locked");
         activeBtn.classList.remove("setting-active");
         suspendBtn.classList.remove("setting-suspend");
@@ -507,7 +559,6 @@ async function showSettingPopup(userid){
       }
     });
   }
-
 async function showPopup(currentBalance, userid) {
     const popup = document.getElementById("popup");
     const currentBalanceSpan = document.getElementById("currentBalance");
