@@ -222,4 +222,18 @@ public class MainController {
 		return "addmatch";
 	}
 
+	@RequestMapping("/activematch") 
+	public String activeMatch(Model model) {
+		model.addAttribute("title", "Active Match - Sky Exchange");
+		model.addAttribute("js", "activematch.js");
+		return "activematch";
+	}
+
+	@RequestMapping("/inactivematch") 
+	public String inActiveMatch(Model model) {
+		model.addAttribute("title", "Inactive - Sky Exchange");
+		model.addAttribute("js", "inactivematch.js");
+		return "inactivematch";
+	}
+
 }

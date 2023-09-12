@@ -38,14 +38,13 @@ function showAllMatches(data, sportName) {
   content.innerHTML = "";
   for (let i = 0; i < sportNameData.length; i++) {
     let child = sportNameData[i];
+    handleAddMatchButtonClick(child);
     content.innerHTML += `<tr>
                                         <td>${child.eventId}</td>
                                         <td>${child.marketId}</td>
                                         <td>${child.createdAt}</td>
                                         <td>${child.eventName}</td>
-                                        <td><button class="websiteAdd" id="addMatch" data-match='${JSON.stringify(
-                                          child
-                                        )}'>Add Match</button></td>
+                                        <td><button style="width: 100px;" class="status-active" id="addMatch" disabled>Match Added</button></td>
                                     </tr>`;
   }
 }
@@ -55,8 +54,7 @@ async function filterMatches(sportName) {
   showAllMatches(data, sportName);
 }
 
-async function handleAddMatchButtonClick(event) {
-  const matchData = JSON.parse(event.target.getAttribute("data-match"));
+async function handleAddMatchButtonClick(data) {
   try {
     const response = await fetch(
       "http://3.0.102.63:7074/exuser/saveMatch",
@@ -65,25 +63,12 @@ async function handleAddMatchButtonClick(event) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(matchData),
+        body: JSON.stringify(data),
       }
     );
-    const result = await response.json();
-    if (result.status === "success") {
-      alert(result.message);
-    }
-    else{
-        alert(result.message);
-    }
   } catch (error) {
     console.error("Error:", error);
   }
 }
-
-document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("websiteAdd")) {
-    handleAddMatchButtonClick(event);
-  }
-});
 
 setActiveButton(cricketButton, "Cricket");

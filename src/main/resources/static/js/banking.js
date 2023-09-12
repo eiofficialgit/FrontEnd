@@ -310,13 +310,22 @@ async function showPopup(currentBalance, userid) {
   });
 }
 
+let id;
+let usertype;
+
+async function setOwnerData() {
+  const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
+  const result = await response.json();
+  const decryptData=JSON.parse(decryptMessage(result.data));
+  id=decryptData.id;
+  usertype=decryptData.usertype+1;
+  document.getElementById("balance").innerText=decryptData.myBalance;
+}
+
+setOwnerData();
+
   async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
-    let data = JSON.parse(sessionStorage?.getItem("data"));
-    if(data){
-        let id=data.id;
-        let usertype = data.usertype+1;
         await getAllChild(id, usertype, currentPage, itemsPerPage);
-    }
     setPageListeners();
   }
 
@@ -352,12 +361,4 @@ async function showPopup(currentBalance, userid) {
     }
         getAllChildAndSetListeners(currentPage, itemsPerPage);
     });
-
-    async function setOwnerData() {
-      const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
-      const result = await response.json();
-      const decryptData=JSON.parse(decryptMessage(result.data));
-      document.getElementById("balance").innerText=decryptData.myBalance;
-  }
-  setOwnerData();
 
