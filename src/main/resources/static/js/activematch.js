@@ -4,6 +4,18 @@ async function getAllActiveMatches() {
   return matches;
 }
 
+function showLoadingSpinner() {
+  let content = document.getElementById("content");
+  content.innerHTML = `<tr>
+                        <td colspan="9">
+                          <div class="d-flex justify-content-center">
+                            <div class="spinner-border  text-warning"></div>
+                            <p class="blink text-warning">Loading...</p>
+                          </div>
+                          </td>
+                        </tr>`;
+}
+
 function showAllMatches(data) {
   let content = document.getElementById("content");
   content.innerHTML = "";
@@ -22,8 +34,12 @@ function showAllMatches(data) {
                         </tr>`;
   }
 }
+
+
+
 document.addEventListener('DOMContentLoaded', async function(){
-    let data=await getAllActiveMatches();
+    showLoadingSpinner();
+    let data = await getAllActiveMatches();
     showAllMatches(data);
 });
 async function handleInactiveMatchButtonClick(event) {
@@ -60,36 +76,3 @@ async function handleInactiveMatchButtonClick(event) {
         handleInactiveMatchButtonClick(event);
     }
   });
-
-/*async function handleAddMatchButtonClick(event) {
-  const matchData = JSON.parse(event.target.getAttribute("data-match"));
-  try {
-    const response = await fetch(
-      "http://3.0.102.63:7074/exuser/saveMatch",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(matchData),
-      }
-    );
-    const result = await response.json();
-    if (result.status === "success") {
-      alert(result.message);
-    }
-    else{
-        alert(result.message);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("websiteAdd")) {
-    handleAddMatchButtonClick(event);
-  }
-});
-
-setActiveButton(cricketButton, "Cricket");*/

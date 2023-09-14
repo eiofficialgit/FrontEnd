@@ -310,22 +310,21 @@ async function showPopup(currentBalance, userid) {
   });
 }
 
-let id;
-let usertype;
-
-async function setOwnerData() {
+async function getIdAndUsertype() {
   const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
   const result = await response.json();
   const decryptData=JSON.parse(decryptMessage(result.data));
-  id=decryptData.id;
-  usertype=decryptData.usertype+1;
-  document.getElementById("balance").innerText=decryptData.myBalance;
+  return decryptData;
 }
 
-setOwnerData();
-
   async function getAllChildAndSetListeners(currentPage, itemsPerPage) {
+      let idAndUsertype=await getIdAndUsertype();
+      document.getElementById("balance").innerText=idAndUsertype.myBalance;
+      if(idAndUsertype){
+        let id=idAndUsertype.id;
+        let usertype = idAndUsertype.usertype+1;
         await getAllChild(id, usertype, currentPage, itemsPerPage);
+      }
     setPageListeners();
   }
 

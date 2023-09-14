@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::body})">
+<head>
+<meta charset="utf-8">
+</head>
+<body style="background-color: #f0ece1;">
+    <div class="full-wrap p-2" style="height: calc(100% - 105px)">
+        
+        <div class="mt-2 mb-3">
+            <p><strong>Suspended Market Results</strong></p>
+            <input type="text" placeholder="Search here ..." style="width: 200px;">
+        </div>
+
+        <table class="table01" style="overflow-y: scroll;">
+            <thead style="height: 30px;">
+                <tr>
+                    <th width="10%" class="align-L">
+                        Sport
+                    </th>
+                    <th width="12%" class="align-L">Event Id
+                    </th>
+                    <th width="12%" class="align-L">Market Id
+                    </th>
+                    <th width="20%">Match
+                    </th>
+                    <th width="20%">Date
+                    </th>
+                    <th width="10%">Status
+                    </th>
+                    <th width="40%">Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="content">
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -47,47 +47,39 @@ async function pageFind() {
   await getAllTransactoionLog(currentPage, itemsPerPage);
 }
 
-var userid;
-
-async function setOwnerData() {
-  try {
-    const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
+async function getIdAndUsertype() {
+  const response = await fetch("http://3.0.102.63:7074/exuser/loginUser");
   const result = await response.json();
   const decryptData=JSON.parse(decryptMessage(result.data));
-  document.getElementById("accountStatementOwner").innerText = decryptData.userid;
-  userid=decryptData.userid;
-  var sub=document.getElementById("accountSub");
-  if(decryptData.usertype === 0){
-      sub.innerText="O";
-  }
-  else if(decryptData.usertype === 1){
-      sub.innerText="SUA";
-  }
-  else if(decryptData.usertype === 2){
-      sub.innerText="MIA";
-  }
-  else if(decryptData.usertype === 3){
-      sub.innerText="SUS";
-  }
-  else if(decryptData.usertype === 4){
-      sub.innerText="SUM";
-  }
-  else if(decryptData.usertype === 5){
-      sub.innerText="M";
-  }
-  else if(decryptData.usertype === 6){
-      sub.innerText="U";
-  }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  return decryptData;
 }
 
 async function showAccountStatement(currentPage, itemsPerPage){
-  if(!userid){
-    const data={"userid": userid};
-    console.log(data);
+  let idAndUsertype=await getIdAndUsertype();
+  document.getElementById("accountStatementOwner").innerText = idAndUsertype.userid;
+  var sub=document.getElementById("accountSub");
+  if(idAndUsertype.usertype === 0){
+      sub.innerText="O";
   }
+  else if(idAndUsertype.usertype === 1){
+      sub.innerText="SUA";
+  }
+  else if(idAndUsertype.usertype === 2){
+      sub.innerText="MIA";
+  }
+  else if(idAndUsertype.usertype === 3){
+      sub.innerText="SUS";
+  }
+  else if(idAndUsertype.usertype === 4){
+      sub.innerText="SUM";
+  }
+  else if(idAndUsertype.usertype === 5){
+      sub.innerText="M";
+  }
+  else if(idAndUsertype.usertype === 6){
+      sub.innerText="U";
+  }
+  const data={"userid": `${idAndUsertype.userid}`};
   const payload={"payload": encryptMessage(JSON.stringify(data))};
   try {
     const response = await fetch(`http://3.0.102.63:7074/exuser/transactionHistory?pageNumber=${currentPage}&pageSize=${itemsPerPage}`, {

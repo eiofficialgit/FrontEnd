@@ -2563,3 +2563,14 @@ thead {
 .active{
     background: #ffa00c;
 }
+.blink {
+    animation: blinker 1s linear infinite;
+    font-size: 20px;
+    margin-left: 10px;
+  }
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }

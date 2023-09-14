@@ -236,4 +236,18 @@ public class MainController {
 		return "inactivematch";
 	}
 
+	@RequestMapping("/suspendedmarketresult") 
+	public String suspendedMarketResult(Model model) {
+		model.addAttribute("title", "Inactive - Sky Exchange");
+		model.addAttribute("js", "suspendedmarketresult.js");
+		return "suspendedmarketresult";
+	}
+
+	@RequestMapping("/suspendedresults") 
+	public String suspendedResults(Model model) {
+		model.addAttribute("title", "Suspended Results - Sky Exchange");
+		model.addAttribute("js", "suspendedresults.js");
+		return "suspendedresults";
+	}
+
 }
